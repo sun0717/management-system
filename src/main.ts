@@ -6,10 +6,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-
-const noFormat =()=>
-{
-    console.log('这是没有格式化但却提交的代码');
+const noFormat = () => {
+  console.log('这是没有格式化但却提交的代码')
 }
 const app = createApp(App)
 
