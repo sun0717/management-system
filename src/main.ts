@@ -29,4 +29,16 @@ import globalComponent from '@/components'
 app.use(globalComponent)
 // 引入模板的全局的样式
 import '@/styles/index.scss'
+
+// 测试代码：测试假的接口能否使用
+import axios from 'axios';
+axios({
+  url: '/api/user/login',
+  method: 'post',
+  data: {
+    username: 'admin',
+    password: '111111'
+  }
+})
+
 app.mount('#app')
