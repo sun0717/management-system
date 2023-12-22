@@ -1,10 +1,11 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
-  <div>
-    <RouterView />
-  </div>
+    <div>
+        404
+    </div>
 </template>
 
 <style scoped lang="scss">
