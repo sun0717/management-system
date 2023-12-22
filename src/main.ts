@@ -8,10 +8,10 @@ import 'element-plus/dist/index.css'
 
 import App from './App.vue'
 import router from './router'
-
+// 引入仓库
 // 配置 element-plus 国际化
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-
+import pinia from './stores'
 import '@/styles/index.scss'
 const app = createApp(App)
 
@@ -21,6 +21,7 @@ app.use(ElementPlus, {
   locale: zhCn
 })
 app.use(router)
+app.use(pinia)
 // svg 插件需要配置代码
 import 'virtual:svg-icons-register'
 // 引入自定义插件对象:注册整个项目全局组件
