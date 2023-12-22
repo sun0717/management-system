@@ -31,7 +31,7 @@ app.use(globalComponent)
 import '@/styles/index.scss'
 
 // 测试代码：测试假的接口能否使用
-import axios from 'axios';
+import axios from 'axios'
 axios({
   url: '/api/user/login',
   method: 'post',
