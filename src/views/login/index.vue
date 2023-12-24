@@ -4,7 +4,66 @@ import { User, Lock, Warning } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/modules/user'
 import { ElNotification } from 'element-plus'
+// 引入获取当前时间的函数
+import { getTime } from '@/utils/time'
+
 const userStore = useUserStore()
+
+let loginForms = ref()
+
+const validatorUsername = (rule: any, value: any, callback: any) => {
+  if (value.length === 0) {
+    callback(new Error('请输入账号'))
+  } else {
+    callback()
+  }
+}
+
+const validatorPassword = (rule: any, value: any, callback: any) => {
+  if (value.length === 0) {
+    callback(new Error('请输入密码'))
+  } else if (value.length < 6 || value.length > 16) {
+    callback(new Error('密码应为6~16位的任意组合'))
+  } else {
+    callback()
+  }
+}
+
+// const validatorVerifyCode = (rule: any, value: any, callback: any) => {
+//   console.log(value, identifyCode.value)
+
+//   if (value.length === 0) {
+//     callback(new Error('请输入验证码'))
+//   } else if (value.length < 4) {
+//     callback(new Error('请输入正确的验证码'))
+//   } else if (identifyCode.value !== value) {
+//     callback(new Error('请输入正确的验证码'))
+//   } else if (identifyCode.value === value) {
+//     callback()
+//   }
+// }
+
+const rules = reactive({
+  username: [
+    {
+      trigger: 'change',
+      validator: validatorUsername,
+    }
+  ],
+  password: [
+    {
+      trigger: 'change',
+      validator: validatorPassword,
+    }
+  ],
+  // verifyCode: [
+  //   {
+  //     trigger: 'blur',
+  //     validator: validatorVerifyCode,
+  //   }
+  // ]
+})
+
 // 定义变量控制加载效果
 let loading = ref(false)
 // 获取路由器
@@ -15,16 +74,20 @@ const loginForm = reactive({
 })
 // 登录按钮回调
 const login = async () => {
+  // 保证全部表单相校验通过再发请求
+  await loginForms.value.validate()
+
   loading.value = true
   // 请求成功 -> 首页展示数据
   // 请求失败 -> 弹出登录失败信息
   try {
-    await userStore.userLogin(loginForm);
+    await userStore.userLogin(loginForm)
     // 编程式导航跳转
     $router.push('/')
     ElNotification({
       type: 'success',
-      message: '登录成功'
+      message: '登录成功',
+      title: `HI,${getTime()}好`
     })
     // 登录成功加载效果也消失
     loading.value = false
@@ -35,8 +98,8 @@ const login = async () => {
       message: (error as Error).message
     })
   }
-  
 }
+
 </script>
 
 <template>
@@ -48,34 +111,16 @@ const login = async () => {
           <h1>Vue-Admin</h1>
           <el-form :model="loginForm" :rules="rules" ref="loginForms">
             <el-form-item prop="username">
-              <el-input
-                :prefix-icon="User"
-                v-model="loginForm.username"
-                clearable
-                placeholder="Username"
-                size="large"
-              ></el-input>
+              <el-input :prefix-icon="User" v-model="loginForm.username" clearable placeholder="Username"
+                size="large"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input
-                type="password"
-                :prefix-icon="Lock"
-                show-password
-                v-model="loginForm.password"
-                size="large"
-                placeholder="Password"
-                clearable
-              ></el-input>
+              <el-input type="password" :prefix-icon="Lock" show-password v-model="loginForm.password" size="large"
+                placeholder="Password" clearable></el-input>
             </el-form-item>
             <el-form-item prop="verifyCode">
-              <el-input
-                :prefix-icon="Warning"
-                show-password
-                v-model="loginForm.verifyCode"
-                placeholder="VerifyCode"
-                size="large"
-                maxlength="4"
-              >
+              <el-input :prefix-icon="Warning" show-password v-model="loginForm.verifyCode" placeholder="VerifyCode"
+                size="large" maxlength="4">
                 <template #append>
                   <Identify :identifyCode="identifyCode" @click="refreshCode" />
                 </template>
@@ -83,13 +128,7 @@ const login = async () => {
             </el-form-item>
           </el-form>
           <el-form-item>
-            <el-button
-              :loading="loading"
-              class="login_btn"
-              type="primary"
-              size="default"
-              @click="login"
-            >
+            <el-button :loading="loading" class="login_btn" type="primary" size="default" @click="login">
               登录
             </el-button>
           </el-form-item>
