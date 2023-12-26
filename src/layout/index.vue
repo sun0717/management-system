@@ -1,29 +1,35 @@
 <template>
-    <el-container class="layout-container-demo" style="height: 100vh">
-        <el-aside width="200px" :class="{ isCollapse: LayOutSettingStore.isCollapse ? true : false }">
-            <el-scrollbar>
-                <el-menu :default-active="$route.path" active-text-color="#fff" background-color="#001529"
-                    text-color="#959ea6" :collapse="LayOutSettingStore.isCollapse" :router="true">
-                    <Logo />
-                    <Menu :menuList="userStore.menuRoutes" />
-                </el-menu>
-            </el-scrollbar> 
-        </el-aside>
+  <el-container class="layout-container-demo" style="height: 100vh">
+    <el-aside width="200px" :class="{ isCollapse: LayOutSettingStore.isCollapse ? true : false }">
+      <el-scrollbar>
+        <el-menu
+          :default-active="$route.path"
+          active-text-color="#fff"
+          background-color="#001529"
+          text-color="#959ea6"
+          :collapse="LayOutSettingStore.isCollapse"
+          :router="true"
+        >
+          <Logo />
+          <Menu :menuList="userStore.menuRoutes" />
+        </el-menu>
+      </el-scrollbar>
+    </el-aside>
 
-        <el-container class="container">
-            <TabBar style="width: 100%" />
-            <el-main :style="{
-                left: !LayOutSettingStore.isCollapse ? '200px' : '56px',
-                width: LayOutSettingStore.isCollapse
-                    ? 'calc(100% - 56px)'
-                    : 'calc(100% - 200px)',
-            }">
-                <el-scrollbar>
-                    <Main />
-                </el-scrollbar>
-            </el-main>
-        </el-container>
+    <el-container class="container">
+      <TabBar style="width: 100%" />
+      <el-main
+        :style="{
+          left: !LayOutSettingStore.isCollapse ? '200px' : '56px',
+          width: LayOutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
+        }"
+      >
+        <el-scrollbar>
+          <Main />
+        </el-scrollbar>
+      </el-main>
     </el-container>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -33,9 +39,8 @@ import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
 
 // 获取用户相关的小仓库
-import useUserStore from '@/store/modules/user.ts'
+import { useUserStore } from '@/stores/modules/user'
 let userStore = useUserStore()
-
 </script>
 
 <style scoped lang="scss">

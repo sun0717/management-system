@@ -13,16 +13,16 @@ import { constantRoute } from '@/router/routes'
 export const useUserStore = defineStore('User', () => {
   // 存储数据
   let token: UserState['token'] = GET_TOKEN()
-  const menuRoutes: UserState['menuRoutes'] = constantRoute 
+  const menuRoutes: UserState['menuRoutes'] = constantRoute
   // 用户登录方法
   async function userLogin(data: loginForm) {
     const result: loginResponseData = await reqLogin(data)
     // 登录请求：成功200->token
-    // 登录请求：失败201->登陆失败错误的信息  
+    // 登录请求：失败201->登陆失败错误的信息
     if (result.code == 200) {
-      token = (result.data.token as string)
-    //   localStorage.setItem('TOKEN', (result.data.token as string))
-      SET_TOEKN((result.data.token as string))
+      token = result.data.token as string
+      //   localStorage.setItem('TOKEN', (result.data.token as string))
+      SET_TOEKN(result.data.token as string)
       return 'ok'
     } else {
       return Promise.reject(new Error(result.data.message))
