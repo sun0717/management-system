@@ -1,29 +1,35 @@
 <template>
-    <el-container class="layout-container-demo" style="height: 100vh">
-        <el-aside width="200px" :class="{ isCollapse: LayOutSettingStore.isCollapse ? true : false }">
-            <el-scrollbar>
-                <el-menu :default-active="$route.path" active-text-color="#fff" background-color="#001529"
-                    text-color="#959ea6" :collapse="LayOutSettingStore.isCollapse" :router="true">
-                    <Logo />
-                    <Menu :menuList="userStore.menuRoutes" />
-                </el-menu>
-            </el-scrollbar> 
-        </el-aside>
+  <el-container class="layout-container-demo" style="height: 100vh">
+    <el-aside width="200px" :class="{ isCollapse: LayOutSettingStore.isCollapse ? true : false }">
+      <el-scrollbar>
+        <el-menu
+          :default-active="$route.path"
+          active-text-color="#fff"
+          background-color="#001529"
+          text-color="#959ea6"
+          :collapse="LayOutSettingStore.isCollapse"
+          :router="true"
+        >
+          <Logo />
+          <Menu :menuList="userStore.menuRoutes" />
+        </el-menu>
+      </el-scrollbar>
+    </el-aside>
 
-        <el-container class="container">
-            <TabBar style="width: 100%" />
-            <el-main :style="{
-                left: !LayOutSettingStore.isCollapse ? '200px' : '56px',
-                width: LayOutSettingStore.isCollapse
-                    ? 'calc(100% - 56px)'
-                    : 'calc(100% - 200px)',
-            }">
-                <el-scrollbar>
-                    <Main />
-                </el-scrollbar>
-            </el-main>
-        </el-container>
+    <el-container class="container">
+      <TabBar style="width: 100%" />
+      <el-main
+        :style="{
+          left: !LayOutSettingStore.isCollapse ? '200px' : '56px',
+          width: LayOutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
+        }"
+      >
+        <el-scrollbar>
+          <Main />
+        </el-scrollbar>
+      </el-main>
     </el-container>
+  </el-container>
 </template>
 
 <script setup lang="ts">
@@ -46,11 +52,10 @@ let userStore = useUserStore()
 let LayOutSettingStore = useLayOutSettingStore()
 
 // 获取路由对象
-let $route = useRoute();
-console.log($route.path);
+let $route = useRoute()
+console.log($route.path)
 </script>
-<script lang="ts">
-</script>
+<script lang="ts"></script>
 <style scoped lang="scss">
 .layout-container-demo {
   height: 100%;
