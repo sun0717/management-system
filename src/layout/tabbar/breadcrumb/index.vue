@@ -21,14 +21,14 @@
 
 <script setup lang="ts">
 import { ArrowRight, Fold, Expand } from '@element-plus/icons-vue'
-import { useLayOutSettingStore } from '@/stores/modules/setting.ts'
-let LayOutSettingStore = useLayOutSettingStore()
+import { useLayoutSettingStore } from '@/stores/modules/setting'
+let LayOutSettingStore = useLayoutSettingStore()
 const changeIcon = () => {
   LayOutSettingStore.isCollapse = !LayOutSettingStore.isCollapse
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .tabbar {
   width: 100%;
   height: 100%;

@@ -7,7 +7,12 @@
     </transition>
   </router-view>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+// import { useLayoutSettingStore } from '@/stores/modules/setting'
+// const layoutSettingStore = useLayoutSettingStore()
+let flag = ref(true)
+</script>
 <style scoped lang="scss">
 .fade-enter-from {
   opacity: 0;
