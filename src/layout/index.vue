@@ -27,17 +27,30 @@
 </template>
 
 <script setup lang="ts">
+// 获取路由对象
+
 // 引入左侧菜单 logo 子组件
 import Logo from './logo/index.vue'
 // 引入菜单组件
 import Menu from './menu/index.vue'
+// 右侧内容展示区域
+import Main from './main/index.vue'
 
+import { useLayOutSettingStore } from '@/stores/modules/setting'
 // 获取用户相关的小仓库
-import useUserStore from '@/store/modules/user.ts'
+import { useUserStore } from '@/stores/modules/user'
+// 引入顶部 tabbar 组件
+import TabBar from './tabbar/index.vue'
 let userStore = useUserStore()
 
-</script>
+let LayOutSettingStore = useLayOutSettingStore()
 
+// 获取路由对象
+let $route = useRoute();
+console.log($route.path);
+</script>
+<script lang="ts">
+</script>
 <style scoped lang="scss">
 .layout-container-demo {
   height: 100%;
