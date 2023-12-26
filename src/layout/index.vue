@@ -1,13 +1,13 @@
 <template>
   <el-container class="layout-container-demo" style="height: 100vh">
-    <el-aside width="200px" :class="{ isCollapse: LayOutSettingStore.isCollapse ? true : false }">
+    <el-aside width="200px" :class="{ isCollapse: LayoutSettingStore.isCollapse ? true : false }">
       <el-scrollbar>
         <el-menu
           :default-active="$route.path"
           active-text-color="#fff"
           background-color="#001529"
           text-color="#959ea6"
-          :collapse="LayOutSettingStore.isCollapse"
+          :collapse="LayoutSettingStore.isCollapse"
           :router="true"
         >
           <Logo />
@@ -20,8 +20,8 @@
       <TabBar style="width: 100%" />
       <el-main
         :style="{
-          left: !LayOutSettingStore.isCollapse ? '200px' : '56px',
-          width: LayOutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
+          left: !LayoutSettingStore.isCollapse ? '200px' : '56px',
+          width: LayoutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
         }"
       >
         <el-scrollbar>
@@ -41,27 +41,22 @@ import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
 // 右侧内容展示区域
 import Main from './main/index.vue'
-
-import { useLayOutSettingStore } from '@/stores/modules/setting'
+// 引入useRoute
+import { useRoute } from 'vue-router'
+import { useLayoutSettingStore } from '@/stores/modules/setting'
 // 获取用户相关的小仓库
 import { useUserStore } from '@/stores/modules/user'
-<<<<<<< HEAD
-let userStore = useUserStore()
-</script>
-=======
 // 引入顶部 tabbar 组件
 import TabBar from './tabbar/index.vue'
 let userStore = useUserStore()
 
-let LayOutSettingStore = useLayOutSettingStore()
->>>>>>> f36806e90c29ff226384b54d5171a45d90a5987b
+let LayoutSettingStore = useLayoutSettingStore()
 
 // 获取路由对象
-let $route = useRoute();
-console.log($route.path);
+let $route = useRoute()
+console.log($route.path)
 </script>
-<script lang="ts">
-</script>
+<script lang="ts"></script>
 <style scoped lang="scss">
 .layout-container-demo {
   height: 100%;

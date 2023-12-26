@@ -110,34 +110,16 @@ const login = async () => {
           <h1>Vue-Admin</h1>
           <el-form :model="loginForm" :rules="rules" ref="loginForms">
             <el-form-item prop="username">
-              <el-input
-                :prefix-icon="User"
-                v-model="loginForm.username"
-                clearable
-                placeholder="Username"
-                size="large"
-              ></el-input>
+              <el-input :prefix-icon="User" v-model="loginForm.username" clearable placeholder="Username"
+                size="large"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input
-                type="password"
-                :prefix-icon="Lock"
-                show-password
-                v-model="loginForm.password"
-                size="large"
-                placeholder="Password"
-                clearable
-              ></el-input>
+              <el-input type="password" :prefix-icon="Lock" show-password v-model="loginForm.password" size="large"
+                placeholder="Password" clearable></el-input>
             </el-form-item>
             <el-form-item prop="verifyCode">
-              <el-input
-                :prefix-icon="Warning"
-                show-password
-                v-model="loginForm.verifyCode"
-                placeholder="VerifyCode"
-                size="large"
-                maxlength="4"
-              >
+              <el-input :prefix-icon="Warning" show-password v-model="loginForm.verifyCode" placeholder="VerifyCode"
+                size="large" maxlength="4">
                 <template #append>
                   <Identify :identifyCode="identifyCode" @click="refreshCode" />
                 </template>
@@ -145,13 +127,7 @@ const login = async () => {
             </el-form-item>
           </el-form>
           <el-form-item>
-            <el-button
-              :loading="loading"
-              class="login_btn"
-              type="primary"
-              size="default"
-              @click="login"
-            >
+            <el-button :loading="loading" class="login_btn" type="primary" size="default" @click="login">
               登录
             </el-button>
           </el-form-item>

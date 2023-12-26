@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    数字大屏
+  </div>
 </template>
 
 <script setup lang="ts"></script>
