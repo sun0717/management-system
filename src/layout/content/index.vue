@@ -8,10 +8,19 @@
   </router-view>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
-// import { useLayoutSettingStore } from '@/stores/modules/setting'
-// const layoutSettingStore = useLayoutSettingStore()
+import { watch, ref, nextTick } from 'vue'
+import { useLayoutSettingStore } from '@/stores/modules/setting'
+
+const layoutSettingStore = useLayoutSettingStore()
 let flag = ref(true)
+// 监听仓库内部数据是否发生变化, 如果发生变化, 说明用户点击过刷新按钮
+watch(() => layoutSettingStore.refsh, () => {
+  // 点击刷新按钮, 路由组件销毁
+  flag.value = false;
+  nextTick(() => {
+    flag.value = true;
+  })
+})
 </script>
 <style scoped lang="scss">
 .fade-enter-from {

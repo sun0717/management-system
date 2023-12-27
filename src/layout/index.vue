@@ -1,21 +1,13 @@
 <template>
   <el-container class="layout-container-demo" style="height: 100vh">
-<<<<<<< HEAD
-    <el-aside width="200px" :class="{ isCollapse: LayOutSettingStore.isCollapse ? true : false }">
-=======
     <el-aside width="200px" :class="{ isCollapse: LayoutSettingStore.isCollapse ? true : false }">
->>>>>>> add716af3d3231a73cbbb369a9ccd65e9d01a44a
       <el-scrollbar>
         <el-menu
           :default-active="$route.path"
           active-text-color="#fff"
           background-color="#001529"
           text-color="#959ea6"
-<<<<<<< HEAD
-          :collapse="LayOutSettingStore.isCollapse"
-=======
           :collapse="LayoutSettingStore.isCollapse"
->>>>>>> add716af3d3231a73cbbb369a9ccd65e9d01a44a
           :router="true"
         >
           <Logo />
@@ -33,7 +25,7 @@
         }"
       >
         <el-scrollbar>
-          <Main />
+          <Content />
         </el-scrollbar>
       </el-main>
     </el-container>
@@ -48,7 +40,7 @@ import Logo from './logo/index.vue'
 // 引入菜单组件
 import Menu from './menu/index.vue'
 // 右侧内容展示区域
-import Main from './main/index.vue'
+import Content from './content/index.vue'
 // 引入useRoute
 import { useRoute } from 'vue-router'
 import { useLayoutSettingStore } from '@/stores/modules/setting'
@@ -57,12 +49,10 @@ import { useUserStore } from '@/stores/modules/user'
 // 引入顶部 tabbar 组件
 import TabBar from './tabbar/index.vue'
 let userStore = useUserStore()
-
 let LayoutSettingStore = useLayoutSettingStore()
-
+console.log(userStore)
 // 获取路由对象
 let $route = useRoute()
-console.log($route.path)
 </script>
 <script lang="ts"></script>
 <style scoped lang="scss">
