@@ -59,7 +59,6 @@
 import Menu from './index.vue'
 // 获取父组件传递过来的全部路由数组
 defineProps(['menuList'])
-
 </script>
 <!-- <script lang="ts">
 export default {

@@ -1,7 +1,8 @@
 // 引入接口
-import { reqLogin } from '@/api/user'
+import { reqLogin, reqUserInfo } from '@/api/user'
 // 创建用户相关的小仓库
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 // 引入数据类型
 import type { loginForm, loginResponseData } from '@/api/user/type'
 // 引入操作本地存储的工具方法
@@ -9,10 +10,12 @@ import { SET_TOEKN, GET_TOKEN } from '@/utils/token'
 // 引入路由(常量路由)
 import { constantRoute } from '@/router/routes'
 // 创建用户小仓库
-export const useUserStore = defineStore('User', () => {
+export const useUserStore = defineStore('UserStore', () => {
   // 存储数据
   let token = GET_TOKEN()
   const menuRoutes = constantRoute
+  const username = ref('')
+  const avatar = ref('')
   // 用户登录方法
   async function userLogin(data: loginForm) {
     const result: loginResponseData = await reqLogin(data)
@@ -28,10 +31,24 @@ export const useUserStore = defineStore('User', () => {
     }
   }
 
+  // 获取用户头像信息
+  async function userInfo() {
+    const result = await reqUserInfo()
+    if (result.code === 200) {
+      username.value = result.data.checkUser.username
+      avatar.value = result.data.checkUser.avatar
+    } else {
+      return Promise.reject(new Error('出错了'))
+    }
+  }
+
   return {
     token,
     menuRoutes,
-    userLogin
+    username,
+    avatar,
+    userLogin,
+    userInfo
   }
 })
 

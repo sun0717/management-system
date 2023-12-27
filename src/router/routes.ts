@@ -58,7 +58,7 @@ export const constantRoute = [
     meta: {
       title: 'Screen',
       hidden: false,
-      icon: 'Platform',
+      icon: 'Platform'
     }
   },
   {
@@ -101,7 +101,7 @@ export const constantRoute = [
           hidden: false,
           icon: 'List'
         }
-      },
+      }
     ]
   },
   {

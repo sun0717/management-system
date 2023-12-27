@@ -4,7 +4,12 @@
     <component :is="LayoutSettingStore.isCollapse ? Expand : Fold"></component>
   </el-icon>
   <el-breadcrumb separator="/" :separator-icon="ArrowRight">
-    <el-breadcrumb-item v-for="(item, index) in $route.matched" :key="index" v-show="item.meta.title" :to="item.path">
+    <el-breadcrumb-item
+      v-for="(item, index) in $route.matched"
+      :key="index"
+      v-show="item.meta.title"
+      :to="item.path"
+    >
       <el-icon style="vertical-align: middle">
         <component :is="item.meta.icon"></component>
       </el-icon>

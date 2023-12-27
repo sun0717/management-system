@@ -1,14 +1,26 @@
 <template>
-  <el-button circle size="small" :icon="Refresh" @click="updateRefsh"/>
-  <el-button circle size="small" :icon="FullScreen" @click="fullScreen"/>
+  <el-button circle size="small" :icon="Refresh" @click="updateRefsh" />
+  <el-button circle size="small" :icon="FullScreen" @click="fullScreen" />
   <el-popover placement="bottom" title="主题设置" :width="200" trigger="hover">
     <el-form>
       <el-form-item label="主题颜色">
-        <el-color-picker v-model="color" show-alpha :predefine="predefineColors" size="small" @change="setColor" />
+        <el-color-picker
+          v-model="color"
+          show-alpha
+          :predefine="predefineColors"
+          size="small"
+          @change="setColor"
+        />
       </el-form-item>
       <el-form-item label="暗黑模式">
-        <el-switch v-model="dark" size="small" inline-prompt active-icon="MoonNight" inactive-icon="Sunny"
-          @change="changeDark" />
+        <el-switch
+          v-model="dark"
+          size="small"
+          inline-prompt
+          active-icon="MoonNight"
+          inactive-icon="Sunny"
+          @change="changeDark"
+        />
       </el-form-item>
     </el-form>
     <template #reference>
@@ -18,7 +30,7 @@
   <img :src="userStore.avatar" alt="" />
   <el-dropdown>
     <span class="el-dropdown-link">
-      admin
+      {{ userStore.username }}
       <el-icon class="el-icon--right">
         <arrow-down />
       </el-icon>
@@ -33,26 +45,23 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import {
-  Refresh,
-  Setting,
-  FullScreen,
-  ArrowDown,
-} from '@element-plus/icons-vue'
+import { Refresh, Setting, FullScreen, ArrowDown } from '@element-plus/icons-vue'
 
 import { useLayoutSettingStore } from '@/stores/modules/setting'
 const layoutSettingStore = useLayoutSettingStore()
 import { useUserStore } from '@/stores/modules/user'
-import { useRoute, useRouter } from 'vue-router';
+const userStore = useUserStore()
+import { useRoute, useRouter } from 'vue-router'
 let $router = useRouter()
 let $route = useRoute()
-const userStore = useUserStore()
+
 let dark = ref<boolean>(false)
 const updateRefsh = () => {
   layoutSettingStore.refsh = !layoutSettingStore.refsh
 }
 
 const fullScreen = () => {
+  // dom 对象的一个属性,判断当前是否为全屏模式
   let full = document.fullscreenElement
   if (!full) {
     document.documentElement.requestFullscreen()
@@ -60,7 +69,7 @@ const fullScreen = () => {
     document.exitFullscreen()
   }
 }
-
+console.log(userStore)
 const color = ref('rgba(255, 69, 0, 0.68)')
 const predefineColors = ref([
   '#ff4500',
@@ -76,7 +85,7 @@ const predefineColors = ref([
   'hsva(120, 40, 94, 0.5)',
   'hsl(181, 100%, 37%)',
   'hsla(209, 100%, 56%, 0.73)',
-  '#c7158577',
+  '#c7158577'
 ])
 
 const changeDark = () => {
