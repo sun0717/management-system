@@ -6,10 +6,24 @@
         <el-icon>
           <component :is="item.meta.icon"></component>
         </el-icon>
+        <template #title>
+          <span>{{ item.meta.title }}</span>
+        </template>
       </el-menu-item>
     </template>
-    <!-- 有子路由单只有一个 --home -->
+    <!-- 有子路由但只有一个 --home -->
     <template v-if="item.children && item.children.length === 1 && item.path === '/'">
+      <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path">
+        <el-icon>
+          <component :is="item.children[0].meta.icon"></component>
+        </el-icon>
+        <template #title>
+          <span>{{ item.children[0].meta.title }}</span>
+        </template>
+      </el-menu-item>
+    </template>
+    <!-- 有子路由但只有一个 --not home -->
+    <template v-if="item.children && item.children.length === 1 && item.path !== '/'">
       <el-sub-menu :index="item.path">
         <template #title>
           <el-icon>
@@ -42,16 +56,13 @@
 </template>
 
 <script setup lang="ts">
+import Menu from './index.vue'
 // 获取父组件传递过来的全部路由数组
 defineProps(['menuList'])
-// import { useRouter } from 'vue-router'
-// 获取路由器对象
-// let $router = useRouter()
-// 点击菜单的回调
-// const goRoute = (vc: any) => {
-//   // 路由跳转
-//   $router.push(vc.index)
-// }
 </script>
-
+<!-- <script lang="ts">
+export default {
+  name: 'Menu'
+}
+</script> -->
 <style scoped lang="scss"></style>
