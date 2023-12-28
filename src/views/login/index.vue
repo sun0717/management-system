@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { User, Lock, Warning } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/modules/user'
 import { ElNotification } from 'element-plus'
 // 引入获取当前时间的函数
@@ -68,6 +68,7 @@ const rules = reactive({
 let loading = ref(false)
 // 获取路由器
 let $router = useRouter()
+let $route = useRoute()
 const loginForm = reactive({
   username: '',
   password: ''
@@ -76,14 +77,16 @@ const loginForm = reactive({
 const login = async () => {
   // 保证全部表单相校验通过再发请求
   await loginForms.value.validate()
-
+  // 编程式导航跳转到展示数据首页
   loading.value = true
   // 请求成功 -> 首页展示数据
   // 请求失败 -> 弹出登录失败信息
   try {
     await userStore.userLogin(loginForm)
     // 编程式导航跳转
-    $router.push('/')
+    // 判断登录的时候, 路由路径当中是否有 query 参数, 如果有就往 query 参数跳转, 没有跳转到首页
+    let redirect: any = $route.query.redirect
+    $router.push({ path: redirect || '/' })
     ElNotification({
       type: 'success',
       message: '登录成功',
@@ -110,34 +113,16 @@ const login = async () => {
           <h1>Vue-Admin</h1>
           <el-form :model="loginForm" :rules="rules" ref="loginForms">
             <el-form-item prop="username">
-              <el-input
-                :prefix-icon="User"
-                v-model="loginForm.username"
-                clearable
-                placeholder="Username"
-                size="large"
-              ></el-input>
+              <el-input :prefix-icon="User" v-model="loginForm.username" clearable placeholder="Username"
+                size="large"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input
-                type="password"
-                :prefix-icon="Lock"
-                show-password
-                v-model="loginForm.password"
-                size="large"
-                placeholder="Password"
-                clearable
-              ></el-input>
+              <el-input type="password" :prefix-icon="Lock" show-password v-model="loginForm.password" size="large"
+                placeholder="Password" clearable></el-input>
             </el-form-item>
             <el-form-item prop="verifyCode">
-              <el-input
-                :prefix-icon="Warning"
-                show-password
-                v-model="loginForm.verifyCode"
-                placeholder="VerifyCode"
-                size="large"
-                maxlength="4"
-              >
+              <el-input :prefix-icon="Warning" show-password v-model="loginForm.verifyCode" placeholder="VerifyCode"
+                size="large" maxlength="4">
                 <template #append>
                   <Identify :identifyCode="identifyCode" @click="refreshCode" />
                 </template>
@@ -145,13 +130,7 @@ const login = async () => {
             </el-form-item>
           </el-form>
           <el-form-item>
-            <el-button
-              :loading="loading"
-              class="login_btn"
-              type="primary"
-              size="default"
-              @click="login"
-            >
+            <el-button :loading="loading" class="login_btn" type="primary" size="default" @click="login">
               登录
             </el-button>
           </el-form-item>

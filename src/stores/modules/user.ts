@@ -6,7 +6,7 @@ import { ref } from 'vue'
 // 引入数据类型
 import type { loginForm, loginResponseData } from '@/api/user/type'
 // 引入操作本地存储的工具方法
-import { SET_TOEKN, GET_TOKEN } from '@/utils/token'
+import { SET_TOEKN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 // 引入路由(常量路由)
 import { constantRoute } from '@/router/routes'
 // 创建用户小仓库
@@ -42,13 +42,21 @@ export const useUserStore = defineStore('UserStore', () => {
     }
   }
 
+  function userLogout() {
+    token = ''
+    username.value = ''
+    avatar.value = ''
+    REMOVE_TOKEN()
+  }
+
   return {
     token,
     menuRoutes,
     username,
     avatar,
     userLogin,
-    userInfo
+    userInfo,
+    userLogout
   }
 })
 

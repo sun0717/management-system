@@ -52,6 +52,7 @@ const layoutSettingStore = useLayoutSettingStore()
 import { useUserStore } from '@/stores/modules/user'
 const userStore = useUserStore()
 import { useRoute, useRouter } from 'vue-router'
+// 获取路由器对象
 let $router = useRouter()
 let $route = useRoute()
 
@@ -69,7 +70,7 @@ const fullScreen = () => {
     document.exitFullscreen()
   }
 }
-console.log(userStore)
+
 const color = ref('rgba(255, 69, 0, 0.68)')
 const predefineColors = ref([
   '#ff4500',
@@ -98,10 +99,17 @@ const setColor = () => {
   html.style.setProperty('--el-color-primary', color.value)
 }
 
-// const logout = async () => {
-//   await userStore.userLogout()
-//   $router.
-// }
+/**
+ * 退出登录
+ * 1. 向服务器发请求[退出登录接口]
+ * 2. 仓库当中关于用于相关的数据清空[token|username|avatar]
+ * 3. 跳转到登录页面
+ */
+const logout = async () => {
+  userStore.userLogout()
+  // 携带 query 参数, 
+  $router.push({ path: '/login', query: {redirect: $route.path}})
+}
 </script>
 
 <style scoped lang="scss">
