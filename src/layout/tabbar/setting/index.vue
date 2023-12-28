@@ -107,8 +107,8 @@ const setColor = () => {
  */
 const logout = async () => {
   userStore.userLogout()
-  // 携带 query 参数, 
-  $router.push({ path: '/login', query: {redirect: $route.path}})
+  // 携带 query 参数,
+  $router.push({ path: '/login', query: { redirect: $route.path } })
 }
 </script>
 
