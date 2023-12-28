@@ -21,31 +21,31 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   if (token) {
     // 如果访问登录页面
     if (to.path === '/login') {
-        // 跳转到 home
-        next({ path: '/' })
+      // 跳转到 home
+      next({ path: '/' })
     } else {
-        // 访问其他页面
-        if (username) {
-            // 如果有用户名
-            // 放行
-            next()
-        } else {
-            try {
-                // 
-                await userStore.userInfo()
-                next({ ...to })
-            } catch(error) {
-                await userStore.userLogout()
-                next({ path: '/login', query: { redirect: to.path } })
-            }
+      // 访问其他页面
+      if (username) {
+        // 如果有用户名
+        // 放行
+        next()
+      } else {
+        try {
+          //
+          await userStore.userInfo()
+          next({ ...to })
+        } catch (error) {
+          await userStore.userLogout()
+          next({ path: '/login', query: { redirect: to.path } })
         }
+      }
     }
   } else {
     // 用户未登录判断
     if (to.path === '/login') {
-        next()
+      next()
     } else {
-        next({ path: 'login', query: { redirect: to.path } })
+      next({ path: 'login', query: { redirect: to.path } })
     }
   }
 })
