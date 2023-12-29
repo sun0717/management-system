@@ -28,5 +28,6 @@ import globalComponent from '@/components'
 app.use(globalComponent)
 // 引入模板的全局的样式
 import '@/styles/index.scss'
-
+// 引入路由鉴权文件
+// import './permission'
 app.mount('#app')
