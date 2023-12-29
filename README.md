@@ -22,11 +22,5 @@ npm run build
 npm run lint
 ```
 
-业务：
+业务模块
 
-路由鉴权
-
-vite 相关配置：
-```typescript
-import { loadEnv } from 'vite'
-```

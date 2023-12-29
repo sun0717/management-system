@@ -36,7 +36,6 @@
 //   data: user
 // }
 
-
 export interface LoginFormData {
   username?: string
   password?: string
@@ -57,9 +56,9 @@ export interface LoginResponseData extends ResponseData {
 // 定义获取用户信息返回数据类型
 export interface userInfoResponseData extends ResponseData {
   data: {
-    routes: string[],
-    buttons: string[],
-    roles: string[],
+    routes: string[]
+    buttons: string[]
+    roles: string[]
     name: string
     avatar: string
   }

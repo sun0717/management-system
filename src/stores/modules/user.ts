@@ -5,11 +5,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 // 引入数据类型
 // import type { loginForm, loginResponseData } from '@/api/user/type'
-import type {
-  LoginFormData,
-  LoginResponseData,
-  userInfoResponseData
-} from '@/api/user/type'
+import type { LoginFormData, LoginResponseData, userInfoResponseData } from '@/api/user/type'
 
 // 引入操作本地存储的工具方法
 import { SET_TOEKN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
