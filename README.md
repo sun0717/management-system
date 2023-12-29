@@ -24,3 +24,6 @@ npm run lint
 
 业务模块
 
+上传文件模块
+用el-upload
+action: 对应的地址
