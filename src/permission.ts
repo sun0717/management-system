@@ -3,14 +3,14 @@ import router from '@/router'
 import setting from './setting'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
-import pinia from './stores'
 // 获取用户相关的小仓库内部 token 数据, 去判断用户是否登录成功
 import { useUserStore } from './stores/modules/user'
 // 组件外用 pinia 需要引入大仓库
-const userStore = useUserStore(pinia)
+
 // 全局守卫: 项目当中任意路由切换都会触发的钩子
 // 全局前置守卫
 router.beforeEach(async (to: any, from: any, next: any) => {
+  const userStore = useUserStore()
   document.title = to.meta.title + ` | ${setting.title}`
   nprogress.start()
   // 获取 token, 判断用户登录, 还是未登录
@@ -31,7 +31,6 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         next()
       } else {
         try {
-          //
           await userStore.userInfo()
           next({ ...to })
         } catch (error) {

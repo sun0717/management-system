@@ -106,7 +106,7 @@ const setColor = () => {
  * 3. 跳转到登录页面
  */
 const logout = async () => {
-  userStore.userLogout()
+  await userStore.userLogout()
   // 携带 query 参数,
   $router.push({ path: '/login', query: { redirect: $route.path } })
 }

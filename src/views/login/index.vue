@@ -70,8 +70,8 @@ let loading = ref(false)
 let $router = useRouter()
 let $route = useRoute()
 const loginForm = reactive({
-  username: '',
-  password: ''
+  username: 'admin',
+  password: 'atguigu123'
 })
 // 登录按钮回调
 const login = async () => {
