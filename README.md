@@ -33,3 +33,10 @@ action: 对应的地址
     ```typescript
         getHasTradeMark(trademarkParams.id ? pageNo.value : 1)
     ```
+
+bug: 添加失败 待解决
+
+
+属性管理
+
+首先获取一级分类内容，根据一级分类id捞二级分类,再根据二级分类捞三级分类, 根据以上三个id捞已有属性与属性值。

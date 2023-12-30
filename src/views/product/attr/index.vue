@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>属性管理</h1>
+    <el-card></el-card>
   </div>
 </template>
 

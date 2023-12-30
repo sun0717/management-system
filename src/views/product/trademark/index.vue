@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue'
-import { reqHasTradeMark, reqAddOrUpdateTrademark } from '@/api/product/trademark'
+import { reqHasTradeMark, reqAddOrUpdateTrademark, reqDeleteTrademark } from '@/api/product/trademark'
 import type { TradeMarkResponseData, Records, TradeMark } from '@/api/product/trademark/type'
 let pageNo = ref<number>(1)
 // 约束每页展示条数
@@ -120,6 +120,7 @@ const cancel = () => {
 }
 
 const confirm = async () => {
+  await formRef.value.validate()
   let result: any = await reqAddOrUpdateTrademark(trademarkParams)
   // 添加品牌成功
   if (result.code === 200) {
@@ -128,7 +129,7 @@ const confirm = async () => {
     // 弹出提示信息
     ElMessage({
       type: 'success',
-      message: trademarkParams.id ? '修改品牌成功' : '添加品牌成功',
+      message: trademarkParams.id ? '修改品牌成功' : '添加品牌成功'
     })
     // 再次发请求获取已有全部的品牌数据
     getHasTradeMark(trademarkParams.id ? pageNo.value : 1)
@@ -136,10 +137,10 @@ const confirm = async () => {
     // 添加品牌失败
     ElMessage({
       type: 'error',
-      message: trademarkParams.id ? '修改品牌失败' : '添加品牌失败',
+      message: trademarkParams.id ? '修改品牌失败' : '添加品牌失败'
     })
     // 关闭对话框
-    dialogFormVisible.value = false
+    // dialogFormVisible.value = false
   }
 }
 
@@ -220,6 +221,27 @@ const updateTradeMark = (row: TradeMark) => {
 
   dialogFormVisible.value = true
   Object.assign(trademarkParams, row)
+}
+
+// 气泡确认框确定按钮的回调
+const removeTradeMark = async (id: number) => {
+  // 点击确定按钮删除已有品牌请求
+  let res = await reqDeleteTrademark(id)
+  if (res.code === 200) {
+    // 删除成功提示信息
+    ElMessage({
+      type: 'success',
+      message: '删除品牌成功' 
+    })
+    // 再次获取已有的品牌数据
+    // 如果品牌数组长度大于1, 留在当前页, 否则回到当前页上一页 - 1。
+    getHasTradeMark(tradeMarkArr.value.length > 1 ? pageNo.value : pageNo.value - 1)
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除品牌失败'
+    })
+  }
 }
 </script>
 
