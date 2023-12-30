@@ -1,6 +1,7 @@
 // 引入项目中全部的全局组件
 import SvgIcon from './SvgIcon/index.vue'
-const allGlobalComponent = { SvgIcon }
+const allGlobalComponent = { SvgIcon, Category }
+import Category from './Category/index.vue'
 // 如果您正在使用CDN引入，请删除下面一行。
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
