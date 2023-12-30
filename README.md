@@ -27,3 +27,9 @@ npm run lint
 上传文件模块
 用el-upload
 action: 对应的地址
+
+- 每次点击添加品牌时再做清空数据
+- 添加完和修改完不一样, 添加完回到第一页, 修改完留在当前页
+    ```typescript
+        getHasTradeMark(trademarkParams.id ? pageNo.value : 1)
+    ```

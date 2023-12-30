@@ -1,13 +1,7 @@
 <template>
   <el-card class="box-card">
     <!-- 添加品牌 -->
-    <el-button
-      type="primary"
-      size="default"
-      icon="Plus"
-      @click="addTradeMark"
-      v-has="`btn.Trademark.add`"
-    >
+    <el-button type="primary" size="default" icon="Plus" @click="addTradeMark" v-has="`btn.Trademark.add`">
       添加品牌
     </el-button>
     <el-table style="margin: 10px 0" border :data="tradeMarkArr">
@@ -20,18 +14,8 @@
       </el-table-column>
       <el-table-column label="品牌操作">
         <template #="{ row, $index }">
-          <el-button
-            type="primary"
-            size="small"
-            icon="Edit"
-            @click="updateTradeMark(row)"
-          ></el-button>
-          <el-popconfirm
-            :title="`您确定删除${row.tmName}`"
-            width="250px"
-            icon="delete"
-            @confirm="removeTradeMark(row.id)"
-          >
+          <el-button type="primary" size="small" icon="Edit" @click="updateTradeMark(row)"></el-button>
+          <el-popconfirm :title="`您确定删除${row.tmName}`" width="250px" icon="delete" @confirm="removeTradeMark(row.id)">
             <template #reference>
               <el-button type="danger" size="small" icon="Delete"></el-button>
             </template>
@@ -41,16 +25,9 @@
     </el-table>
 
     <!-- pagination -->
-    <el-pagination
-      v-model:current-page="pageNo"
-      v-model:page-size="limit"
-      :page-sizes="[3, 5, 7, 9]"
-      :background="true"
-      layout="prev, pager, next, jumper, ->, sizes, total"
-      :total="total"
-      @current-change="getHasTradeMark"
-      @size-change="sizeChange"
-    />
+    <el-pagination v-model:current-page="pageNo" v-model:page-size="limit" :page-sizes="[3, 5, 7, 9]" :background="true"
+      layout="prev, pager, next, jumper, ->, sizes, total" :total="total" @current-change="getHasTradeMark"
+      @size-change="sizeChange" />
   </el-card>
   <!-- 对话框组件：在添加品牌与修改已有品牌的业务时候使用结构 -->
   <el-dialog v-model="dialogFormVisible" :title="trademarkParams.id ? '修改品牌' : '添加品牌'">
@@ -67,13 +44,8 @@
                   若返回 false 或者返回 Promise 且被 reject, 则停止上传。
                   用来限制用户上传文件的格式和大小
         -->
-        <el-upload
-          class="avatar-uploader"
-          action="/api/admin/product/fileUpload"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
+        <el-upload class="avatar-uploader" action="/api/admin/product/fileUpload" :show-file-list="false"
+          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
           <img v-if="trademarkParams.logoUrl" :src="trademarkParams.logoUrl" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
             <Plus />
@@ -90,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue'
-import { reqHasTradeMark } from '@/api/product/trademark'
+import { reqHasTradeMark, reqAddOrUpdateTrademark } from '@/api/product/trademark'
 import type { TradeMarkResponseData, Records, TradeMark } from '@/api/product/trademark/type'
 let pageNo = ref<number>(1)
 // 约束每页展示条数
@@ -135,7 +107,7 @@ const addTradeMark = () => {
   trademarkParams.id = 0
   trademarkParams.tmName = ''
   trademarkParams.logoUrl = ''
-
+  // 二次更新
   nextTick(() => {
     formRef.value.clearValidate('tmName')
     formRef.value.clearValidate('logoUrl')
@@ -147,9 +119,28 @@ const cancel = () => {
   dialogFormVisible.value = false
 }
 
-const confirm = () => {
-  // 对话框隐藏
-  dialogFormVisible.value = false
+const confirm = async () => {
+  let result: any = await reqAddOrUpdateTrademark(trademarkParams)
+  // 添加品牌成功
+  if (result.code === 200) {
+    // 关闭对话框
+    dialogFormVisible.value = false
+    // 弹出提示信息
+    ElMessage({
+      type: 'success',
+      message: trademarkParams.id ? '修改品牌成功' : '添加品牌成功',
+    })
+    // 再次发请求获取已有全部的品牌数据
+    getHasTradeMark(trademarkParams.id ? pageNo.value : 1)
+  } else {
+    // 添加品牌失败
+    ElMessage({
+      type: 'error',
+      message: trademarkParams.id ? '修改品牌失败' : '添加品牌失败',
+    })
+    // 关闭对话框
+    dialogFormVisible.value = false
+  }
 }
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
@@ -157,6 +148,7 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
   // 收集上传图片的地址, 添加一个新的品牌的时候带给服务器
   // imageUrl.value = URL.createObjectURL(uploadFile.raw!)
   trademarkParams.logoUrl = response.data
+  // 上传成功, 清除错误提示
   formRef.value.clearValidate('logoUrl')
 }
 
@@ -204,6 +196,8 @@ const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
 const rules = {
   tmName: [
     {
+      // required: 这个字段务必校验, 表单项前面出来五角星
+      // trigger: 代表触发校验规则时机[blur、change]
       required: true,
       trigger: 'blur',
       validator: validatorTmName
