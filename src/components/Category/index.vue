@@ -1,5 +1,5 @@
 <template>
-    <!-- <el-card>
+  <!-- <el-card>
         <el-form :inline="true">
             <el-form-item label="一级分类">
                 <el-select :disabled="scene === 0 ? false : true" v-model="categoryStore.c1Id" @change="handler(1)">
@@ -27,12 +27,12 @@
 import { onMounted, ref } from 'vue'
 import { reqC1 } from '@/api/product/attr/index'
 onMounted(() => {
-    getC1()
+  getC1()
 })
 
 const getC1 = async () => {
-    let result = await reqC1()
-    console.log(result)
+  let result = await reqC1()
+  console.log(result)
 }
 </script>
 
