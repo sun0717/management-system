@@ -1,5 +1,5 @@
 <template>
-  <!-- <el-card>
+    <el-card>
         <el-form :inline="true">
             <el-form-item label="一级分类">
                 <el-select :disabled="scene === 0 ? false : true" v-model="categoryStore.c1Id" @change="handler(1)">
@@ -20,20 +20,35 @@
                 </el-select>
             </el-form-item>
         </el-form>
-    </el-card> -->
+    </el-card>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+// 引入分类相关的方法
+import { useCategoryStore } from '@/stores/modules/category'
+const categoryStore = useCategoryStore()
 import { reqC1 } from '@/api/product/attr/index'
 onMounted(() => {
-  getC1()
+    categoryStore.getC1()
 })
 
-const getC1 = async () => {
-  let result = await reqC1()
-  console.log(result)
+// 此方法即为一级分类下拉菜单的 change 事件(选中值的时候会触发, 保证一级分类ID)
+const handler = (n: number) => {
+    // 一级变化时, 将二级和三级分类清空
+    if (n === 1) {
+        categoryStore.c2Id = ''
+        categoryStore.c3Id = ''
+        categoryStore.c3Arr = []
+        categoryStore.getC2()
+    } else if (n === 2) {
+        categoryStore.c3Id = ''
+        categoryStore.getC3()
+    }
 }
+
+// 接受父组件传递过来的scene
+defineProps(['scene'])
 </script>
 
 <style scoped></style>
