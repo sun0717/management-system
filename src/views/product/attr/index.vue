@@ -3,7 +3,13 @@
     <Category />
     <el-card style="margin: 10px 0">
       <div v-show="scene === 0">
-        <el-button type="primary" size="default" icon="Plus" :disabled="!categoryStore.c3Id" @click="addAttr">
+        <el-button
+          type="primary"
+          size="default"
+          icon="Plus"
+          :disabled="!categoryStore.c3Id"
+          @click="addAttr"
+        >
           添加平台属性
         </el-button>
         <el-table border style="margin: 10px 0" :data="attrArr">
@@ -18,8 +24,17 @@
           </el-table-column>
           <el-table-column label="操作">
             <template #="{ row, $index }">
-              <el-button type="primary" size="small" icon="Edit" @click="updateAttr(row)"></el-button>
-              <el-popconfirm :title="`你确定删除${row.attrName}?`" width="200px" @confirm="deleteAttr(row.id)">
+              <el-button
+                type="primary"
+                size="small"
+                icon="Edit"
+                @click="updateAttr(row)"
+              ></el-button>
+              <el-popconfirm
+                :title="`你确定删除${row.attrName}?`"
+                width="200px"
+                @confirm="deleteAttr(row.id)"
+              >
                 <template #reference>
                   <el-button type="danger" size="small" icon="Delete"></el-button>
                 </template>
@@ -34,8 +49,13 @@
             <el-input placeholder="请你输入属性名称" v-model="attrParams.attrName"></el-input>
           </el-form-item>
         </el-form>
-        <el-button :disabled="attrParams.attrName ? false : true" type="primary" size="default" icon="Plus"
-          @click="addAttrValue">
+        <el-button
+          :disabled="attrParams.attrName ? false : true"
+          type="primary"
+          size="default"
+          icon="Plus"
+          @click="addAttrValue"
+        >
           添加属性值
         </el-button>
         <el-button size="default" @click="cancel">取消</el-button>
@@ -44,20 +64,33 @@
           <el-table-column label="属性值名称">
             <!-- row 当前属性值对象 -->
             <template #="{ row, $index }">
-              <el-input :ref="(vc: any) => inputArr[$index] = vc" v-if="row.flag" placeholder="请你输入属性值名称"
-                v-model="row.valueName" @blur="toLook(row, $index)"></el-input>
+              <el-input
+                :ref="(vc: any) => (inputArr[$index] = vc)"
+                v-if="row.flag"
+                placeholder="请你输入属性值名称"
+                v-model="row.valueName"
+                @blur="toLook(row, $index)"
+              ></el-input>
               <div v-else @click="toEdit(row, $index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>
           <el-table-column label="属性值操作">
             <template #="{ row, $index }">
-              <el-button type="danger" size="small" icon="Delete"
-                @click="attrParams.attrValueList.splice($index, 1)"></el-button>
+              <el-button
+                type="danger"
+                size="small"
+                icon="Delete"
+                @click="attrParams.attrValueList.splice($index, 1)"
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="primary" size="default" @click="save"
-          :disabled="attrParams.attrValueList.length > 0 ? false : true">
+        <el-button
+          type="primary"
+          size="default"
+          @click="save"
+          :disabled="attrParams.attrValueList.length > 0 ? false : true"
+        >
           保存
         </el-button>
         <el-button size="default" @click="cancel">取消</el-button>
@@ -76,7 +109,7 @@ import type { AttrResponseData, Attr } from '@/api/product/attr/type'
 import { ElMessage } from 'element-plus'
 let attrArr = ref<Attr[]>([])
 // 定义 card 组件内容切换变量
-let scene = ref<number>(0) // scene = 0: 显示 table, scene = 1: 展示添加与修改table 
+let scene = ref<number>(0) // scene = 0: 显示 table, scene = 1: 展示添加与修改table
 // 定义一个响应式数据控制编辑模式与查看模式的切换
 let categoryStore = useCategoryStore()
 
@@ -85,11 +118,12 @@ let attrParams = reactive({
   attrName: '',
   attrValueList: [],
   categoryId: '',
-  categoryLevel: 3,
+  categoryLevel: 3
 })
-// 准备一个数组：将来存储对应的组件实例 el-input 
+// 准备一个数组：将来存储对应的组件实例 el-input
 let inputArr = ref<any>([])
-watch(() => categoryStore.c3Id,
+watch(
+  () => categoryStore.c3Id,
   () => {
     // 清空上一次查询的属性与属性值
     attrArr.value = []
@@ -97,7 +131,7 @@ watch(() => categoryStore.c3Id,
     if (!categoryStore.c3Id) return
     // 获取分类的ID
     getAttr()
-  },
+  }
 )
 
 // 获取已有的属性与属性值方法
@@ -118,7 +152,7 @@ const addAttr = () => {
       // 新增的属性值数组
     ],
     categoryId: '', // 三级分类的ID
-    categoryLevel: 3, // 代表的是三级分类
+    categoryLevel: 3 // 代表的是三级分类
   })
   // 切换为添加与修改属性的结构
   scene.value = 1
@@ -143,7 +177,7 @@ const addAttrValue = () => {
   // 点击添加属性值按钮的时候, 向数组添加一个属性值对象
   attrParams.attrValueList.push({
     valueName: '',
-    flag: true,
+    flag: true
   })
   // 获取最后 el-input 组件聚焦
   // 表单聚焦
@@ -182,7 +216,7 @@ const toLook = (row: AttrValue, $index: number) => {
     // 删除调用对应属性值为空的元素
     attrParams.attrValueList.splice($index, 1)
     ElMessage({
-      type: "error",
+      type: 'error',
       message: '属性值不能为空'
     })
     return
