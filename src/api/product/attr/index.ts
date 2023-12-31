@@ -4,7 +4,7 @@ enum API {
   // 获取一级分类接口
   C1_URL = '/admin/product/getCategory1',
   // 获取二级分类接口
-  C2_URL = '/admin/product/getCategory2/{category1Id}',
+  C2_URL = '/admin/product/getCategory2/',
   // 获取三级分类接口
   C3_URL = '/admin/product/getCategory3/',
   // 获取分类下已有的属性与属性值

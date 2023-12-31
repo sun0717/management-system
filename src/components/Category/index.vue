@@ -44,11 +44,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 // 引入分类相关的方法
 import { useCategoryStore } from '@/stores/modules/category'
 const categoryStore = useCategoryStore()
-import { reqC1 } from '@/api/product/attr/index'
 onMounted(() => {
   categoryStore.getC1()
 })

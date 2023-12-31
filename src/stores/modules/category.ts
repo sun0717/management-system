@@ -13,21 +13,21 @@ export const useCategoryStore = defineStore('Category', () => {
   const c3Arr = ref<any>([])
 
   const getC1 = async () => {
-    let res: CategoryResponseData = await reqC1()
+    const res: CategoryResponseData = await reqC1()
     if (res.code === 200) {
       c1Arr.value = res.data
     }
   }
 
   const getC2 = async () => {
-    let res: CategoryResponseData = await reqC2(c1Id)
+    const res: CategoryResponseData = await reqC2(c1Id.value)
     if (res.code === 200) {
       c2Arr.value = res.data
     }
   }
 
   const getC3 = async () => {
-    let res: CategoryResponseData = await reqC3(c2Id)
+    const res: CategoryResponseData = await reqC3(c2Id.value)
     if (res.code === 200) {
       c3Arr.value = res.data
     }

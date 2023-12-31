@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Category />
+    <Category :scene="scene"/>
     <el-card style="margin: 10px 0">
       <div v-show="scene === 0">
         <el-button
@@ -101,11 +101,11 @@
 
 <script setup lang="ts">
 // 组合式函数 watch
-import { ref, watch, reactive, nextTick, onBeforeMount, onBeforeUnmount } from 'vue'
+import { ref, watch, reactive, nextTick, onBeforeUnmount } from 'vue'
 import { useCategoryStore } from '@/stores/modules/category'
 // 引入获取已有属性与属性值接口
 import { reqAttr, reqAddOrUpdateAttr, reqRemoveAttr } from '@/api/product/attr'
-import type { AttrResponseData, Attr } from '@/api/product/attr/type'
+import type { AttrResponseData, AttrValue, Attr } from '@/api/product/attr/type'
 import { ElMessage } from 'element-plus'
 let attrArr = ref<Attr[]>([])
 // 定义 card 组件内容切换变量
@@ -114,14 +114,16 @@ let scene = ref<number>(0) // scene = 0: 显示 table, scene = 1: 展示添加�
 let categoryStore = useCategoryStore()
 
 // 收集新增的属性的数据
-let attrParams = reactive({
+let attrParams = reactive<Attr>({
   attrName: '',
   attrValueList: [],
   categoryId: '',
   categoryLevel: 3
 })
+
 // 准备一个数组：将来存储对应的组件实例 el-input
 let inputArr = ref<any>([])
+
 watch(
   () => categoryStore.c3Id,
   () => {
@@ -189,7 +191,7 @@ const addAttrValue = () => {
 // 保存按钮回调
 const save = async () => {
   // 收集参数
-  let result: any = reqAddOrUpdateAttr(attrParams)
+  let result: any = await reqAddOrUpdateAttr(attrParams)
   // 发请求
   if (result.code === 200) {
     // 切换场景
