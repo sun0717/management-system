@@ -27,12 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 // 引入顶部子组件
 import Top from './components/top/index.vue'
 import Tourist from './components/tourist/index.vue'
 import Sex from './components/sex/index.vue'
 import Age from './components/age/index.vue'
+import Map from './components/map/index.vue'
 // 获取数据大屏展示内容盒子的DOM元素
 let screen = ref()
 onMounted(() => {
