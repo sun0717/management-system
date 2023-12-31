@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Category :scene="scene"/>
+    <Category :scene="scene" />
     <el-card style="margin: 10px 0">
       <div v-show="scene === 0">
         <el-button

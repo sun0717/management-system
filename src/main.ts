@@ -12,6 +12,8 @@ import router from './router'
 // 配置 element-plus 国际化
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import '@/styles/index.scss'
+// 暗黑模式样式引入
+import 'element-plus/theme-chalk/dark/css-vars.css'
 const app = createApp(App)
 
 // console.log(import.meta.env)

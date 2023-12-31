@@ -9,7 +9,7 @@ export const useCategoryStore = defineStore('Category', () => {
   const c2Id = ref('')
   const c3Id = ref('')
   const c1Arr = ref<any>([])
-  const c2Arr = ref<any>([])
+  const c2Arr = ref<any>([])  
   const c3Arr = ref<any>([])
 
   const getC1 = async () => {
