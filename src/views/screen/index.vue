@@ -34,6 +34,10 @@ import Tourist from './components/tourist/index.vue'
 import Sex from './components/sex/index.vue'
 import Age from './components/age/index.vue'
 import Map from './components/map/index.vue'
+import Line from './components/line/index.vue'
+import Rank from './components/rank/index.vue'
+import Year from './components/year/index.vue'
+import Counter from './components/counter/index.vue'
 // 获取数据大屏展示内容盒子的DOM元素
 let screen = ref()
 onMounted(() => {
