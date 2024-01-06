@@ -10,10 +10,10 @@ export interface SpuData {
   id?: number
   spuName: string
   description: string
-  categoryId: number | string
-  tmId: number
-  spuSaleAttrList: null
-  spuImageList: null
+  category3Id: number | string
+  tmId: number | string
+  spuSaleAttrList: null | SaleAttr[]
+  spuImageList: null | SpuImg[]
 }
 
 // 数组:元素都是已有SPU数据类型
@@ -96,6 +96,6 @@ export interface HasSaleAttr {
   name: string
 }
 
-export interface HasSaleAttrList extends ResponseData {
+export interface HasSaleAttrResponseData extends ResponseData {
   data: HasSaleAttr[]
 }
