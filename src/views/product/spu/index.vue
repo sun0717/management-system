@@ -29,17 +29,29 @@
           @current-change="getHasSpu" @size-change="changeSize" />
       </div>
       <SpuForm ref="spu" v-show="scene === 1" @changeScene="changeScene"></SpuForm>
-      <!-- <SkuForm ref="sku" v-show="scene === 2" @changeScene="changeScene"></SkuForm> -->
+      <SkuForm ref="sku" v-show="scene === 2" @changeScene="changeScene"></SkuForm>
+      <el-dialog v-model="show" title="SKU列表">
+        <el-table border :data="skuArr">
+          <el-table-column label="SKU名字" prop="skuName"></el-table-column>
+          <el-table-column label="SKU价格" prop="price"></el-table-column>
+          <el-table-column label="SKU重量" prop="weight"></el-table-column>
+          <el-table-column label="SKU图片">
+            <template #="{ row, $index }">
+              <img :src="row.skuDefaultImg" style="width: 100px; height: 100px;">
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 // 场景的数据
-import { ref, watch } from 'vue'
+import { ref, watch, onBeforeUnmount } from 'vue'
 import Category from '@/components/Category/index.vue'
-import { reqHasSpu } from '@/api/product/spu'
-import type { HasSpuResponseData, Records, SpuData } from '@/api/product/spu/type'
+import { reqHasSpu, reqSkuList, reqDeleteSpu } from '@/api/product/spu'
+import type { HasSpuResponseData, Records, SpuData, SkuInfoData, SkuData } from '@/api/product/spu/type'
 import { useCategoryStore } from '@/stores/modules/category'
 import SpuForm from './spuForm.vue'
 import SkuForm from './skuForm.vue'
@@ -55,6 +67,9 @@ let records = ref<Records>([])
 // 获取子组件实例
 let spu = ref<any>()
 let sku = ref<any>()
+// 存储全部的 sku 数据
+let skuArr = ref<SkuData>([])
+let show = ref<boolean>(false)
 let total = ref<number>(0)
 // 监听三级分类ID变化
 watch(
@@ -83,7 +98,9 @@ const addSpu = () => {
   spu.value.initAddSpu(categoryStore.c3Id)
 }
 
+// 添加SKU按钮的回调
 const addSku = (row: SpuData) => {
+  // 点击添加SKU按钮的切换
   scene.value = 2
   sku.value.initSkuData(categoryStore.c1Id, categoryStore.c2Id, row)
 }
@@ -93,12 +110,29 @@ const updateSpu = (row: SpuData) => {
   spu.value.initHasSpuData(row)
 }
 
-const findSku = () => {
-  console.log(111)
+const findSku = async (row: SpuData) => {
+  let result: SkuInfoData = await reqSkuList(row.id)
+  if (result.code === 200) {
+    skuArr.value = result.data
+    // 对话框显示出来
+    show.value = true
+  }
 }
 
-const deleteSpu = () => {
-  console.log(111)
+const deleteSpu = async (row: SpuData) => {
+  let res: any = await reqDeleteSpu(row.id as number)
+  if (res.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    getHasSpu(records.value.length > 1 ? pageNo.value : pageNo.value - 1)
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败',
+    })
+  }
 }
 
 const changeSize = () => {
@@ -117,6 +151,10 @@ const changeScene = (obj: any) => {
     getHasSpu()
   }
 }
+// 路由组件销毁前, 清空仓库关于分类的数据
+onBeforeUnmount(() => {
+  categoryStore.$reset()
+})
 </script>
 
 <style lang="scss" scoped></style>

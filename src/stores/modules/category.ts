@@ -5,12 +5,12 @@ import type { CategoryResponseData } from '@/api/product/attr/type'
 import { reqC1, reqC2, reqC3 } from '@/api/product/attr'
 
 export const useCategoryStore = defineStore('Category', () => {
-  const c1Id = ref('')
-  const c2Id = ref('')
-  const c3Id = ref('')
-  const c1Arr = ref<any>([])
-  const c2Arr = ref<any>([])
-  const c3Arr = ref<any>([])
+  let c1Id = ref('')
+  let c2Id = ref('')
+  let c3Id = ref('')
+  let c1Arr = ref<any>([])
+  let c2Arr = ref<any>([])
+  let c3Arr = ref<any>([])
 
   const getC1 = async () => {
     const res: CategoryResponseData = await reqC1()
@@ -33,6 +33,14 @@ export const useCategoryStore = defineStore('Category', () => {
     }
   }
 
+  const $reset = () => {
+    c1Id.value = ''
+    c2Id.value = ''
+    c3Id.value = ''
+    c1Arr.value = []
+    c2Arr.value = []
+    c3Arr.value = []
+  }
   return {
     c1Id,
     c2Id,
@@ -42,6 +50,7 @@ export const useCategoryStore = defineStore('Category', () => {
     c3Arr,
     getC1,
     getC2,
-    getC3
+    getC3,
+    $reset
   }
 })
