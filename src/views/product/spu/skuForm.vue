@@ -17,8 +17,12 @@
         <el-form :inline="true">
           <el-form-item v-for="(item, index) in attrArr" :key="item.id" :label="item.attrName">
             <el-select v-model="item.attrIdAndValueId">
-              <el-option v-for="(attrValue, index) in item.attrValueList" :key="attrValue.id"
-                :value="`${item.id}:${attrValue.id}`" :label="attrValue.valueName"></el-option>
+              <el-option
+                v-for="(attrValue, index) in item.attrValueList"
+                :key="attrValue.id"
+                :value="`${item.id}:${attrValue.id}`"
+                :label="attrValue.valueName"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -27,8 +31,12 @@
         <el-form :inline="true">
           <el-form-item v-for="(item, index) in saleArr" :key="item.id" :label="item.saleAttrName">
             <el-select v-model="item.saleIdAndValueId">
-              <el-option :value="`${item.id}:${saleAttrValue.id}`" :label="saleAttrValue.saleAttrValueName"
-                v-for="(saleAttrValue, index) in item.spuSaleAttrValueList" :key="saleAttrValue.id"></el-option>
+              <el-option
+                :value="`${item.id}:${saleAttrValue.id}`"
+                :label="saleAttrValue.saleAttrValueName"
+                v-for="(saleAttrValue, index) in item.spuSaleAttrValueList"
+                :key="saleAttrValue.id"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -38,15 +46,13 @@
           <el-table-column type="selection" width="80px" align="center"></el-table-column>
           <el-table-column label="图片">
             <template #="{ row, $index }">
-              <img :src="row.imgUrl" alt="" style="width: 100px; height: 100px;" />
+              <img :src="row.imgUrl" alt="" style="width: 100px; height: 100px" />
             </template>
           </el-table-column>
           <el-table-column label="名称" prop="imgName"></el-table-column>
           <el-table-column label="操作">
             <template #="{ row, $index }">
-              <el-button type="primary" size="small" @click="handler(row)">
-                设置默认
-              </el-button>
+              <el-button type="primary" size="small" @click="handler(row)"> 设置默认 </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -56,7 +62,6 @@
         <el-button size="default" @click="cancel">取消</el-button>
       </el-form-item>
     </el-form>
-
   </div>
 </template>
 
@@ -94,7 +99,7 @@ let skuParams = reactive<SkuData>({
     //   saleAttrValueId: '',
     // },
   ],
-  skuDefaultImg: '',
+  skuDefaultImg: ''
 })
 let $emit = defineEmits(['changeScene'])
 
@@ -134,7 +139,8 @@ const save = async () => {
     if (cur.attrIdAndValueId) {
       let [attrId, valueId] = cur.attrIdAndValueId.split(':')
       acc.push({
-        attrId, valueId
+        attrId,
+        valueId
       })
     }
     return acc
@@ -144,7 +150,8 @@ const save = async () => {
     if (cur.saleIdAndValueId) {
       let [saleAttrId, saleAttrValueId] = cur.saleIdAndValueId.split(':')
       acc.push({
-        saleAttrId, saleAttrValueId
+        saleAttrId,
+        saleAttrValueId
       })
     }
     return acc

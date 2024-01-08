@@ -48,8 +48,10 @@ export const reqAddOrUpdateSpu = (data: SpuData) => {
   }
 }
 // 添加SKU的请求方法
-export const reqAddSku = (data: any) => request.post<any, any>(API.ADDSPU_URL, data);
+export const reqAddSku = (data: any) => request.post<any, any>(API.ADDSPU_URL, data)
 // 获取SKU数据
-export const reqSkuList = (spuId: number | string) => request.get<any, SkuInfoData>(API.SKUINFO_URL + spuId)
+export const reqSkuList = (spuId: number | string) =>
+  request.get<any, SkuInfoData>(API.SKUINFO_URL + spuId)
 // 删除SPU数据
-export const reqDeleteSpu = (spuId: number | string) => request.delete<any, any>(API.REMOVESPU_URL + spuId)
+export const reqDeleteSpu = (spuId: number | string) =>
+  request.delete<any, any>(API.REMOVESPU_URL + spuId)
