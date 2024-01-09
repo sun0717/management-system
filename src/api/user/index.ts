@@ -1,6 +1,7 @@
 // swagger文档
 // http://39.98.123.211:8510/swagger-ui.html
 // http://139.198.104.58:8212/swagger-ui.html#/index45controller
+// http://139.198.104.58:8212/swagger-ui.html#/admin45controller
 // 统一管理用户相关的接口
 import request from '@/utils/request'
 // import type { loginForm, loginResponseData, userResponseData } from './type'
