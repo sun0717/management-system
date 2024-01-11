@@ -1,5 +1,5 @@
 <template>
-  <!-- <el-card style="height: 80px">
+  <el-card style="height: 80px">
     <el-form :inline="true" class="form">
       <el-form-item label="用户名:">
         <el-input placeholder="请你输入搜索用户名" v-model="keyword"></el-input>
@@ -11,11 +11,9 @@
         <el-button size="default" @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
-  </el-card> -->
+  </el-card>
   <el-card style="margin: 10px 0">
-    <el-button type="primary" size="default" @click="addUser">
-      添加用户
-    </el-button>
+    <el-button type="primary" size="default" @click="addUser"> 添加用户 </el-button>
     <el-button type="danger" size="default" :disabled="selectIdArr.length ? false : true" @click="deleteSelectUser">
       批量删除
     </el-button>
@@ -31,17 +29,13 @@
       <el-table-column label="更新时间" align="center" prop="updateTime" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" width="300px" align="center">
         <template #="{ row, $index }">
-          <el-button size="small" icon="User" @click="setRole(row)">
-            分配角色
-          </el-button>
+          <el-button size="small" icon="User" @click="setRole(row)"> 分配角色 </el-button>
           <el-button type="primary" size="small" icon="Edit" @click="updateUser(row)">
             编辑
           </el-button>
           <el-popconfirm :title="`你确定删除${row.username}`" width="260px" @confirm="deleteUser(row.id)">
             <template #reference>
-              <el-button type="danger" size="small" icon="Delete">
-                删除
-              </el-button>
+              <el-button type="danger" size="small" icon="Delete"> 删除 </el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -75,7 +69,7 @@
       </div>
     </template>
   </el-drawer>
-  <el-drawer v-model="drawer">
+  <el-drawer v-model="drawer1">
     <template #header>
       <h4>分配角色</h4>
     </template>
@@ -99,7 +93,7 @@
     <template #footer>
       <div style="flex: auto">
         <el-button @click="drawer = false">取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button type="primary" @click="confirmClick">确定</el-button>
       </div>
     </template>
   </el-drawer>
@@ -107,25 +101,37 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick } from 'vue'
-import { ElMessage, formContextKey } from 'element-plus'
-import { reqUserInfo, reqAddOrUpdateUser } from '@/api/acl/user'
-import type { UserResponseData, Records, User } from '@/api/acl/user/type'
-import { reqDeleteSpu } from '@/api/product/spu';
+import { ElMessage } from 'element-plus'
+import { reqUserInfo, reqAddOrUpdateUser, reqSelectUser, reqAllRole, reqDeleteUser, reqSetUserRole } from '@/api/acl/user'
+import type { UserResponseData, Records, User, AllRole, AllRoleResponseData, SetRoleData } from '@/api/acl/user/type'
+import { useLayoutSettingStore } from '@/stores/modules/setting'
 // 分页器当前页码
 let pageNo = ref<number>(1)
 // 每一页展示几条数据
 let pageSize = ref<number>(10)
 let total = ref<number>(0)
+// 存储全部用户的数组
 let userArr = ref<Records>([])
 let keyword = ref<string>('')
+// 定义响应式数据控制抽屉的显示与隐藏
 let drawer = ref<boolean>(false)
+// 控制分配角色抽屉显示与隐藏
+let drawer1 = ref<boolean>(false)
+// 存储全部职位的数据
+let allRole = ref<AllRole>([])
+// 当前用户已有的职位
+let userRole = ref<AllRole>([])
+let selectIdArr = ref<User[]>([])
 let formRef = ref()
+let checkAll = ref<boolean>(false)
+const isIndeterminate = ref<boolean>(true)
 // 收集用户信息的响应式数据
 let userParams = reactive<User>({
   username: '',
   name: '',
   password: ''
 })
+let settingStore = useLayoutSettingStore()
 const getHasUser = async (pager = 1) => {
   pageNo.value = pager
   let result: UserResponseData = await reqUserInfo(pageNo.value, pageSize.value, keyword.value)
@@ -134,6 +140,20 @@ const getHasUser = async (pager = 1) => {
     userArr.value = result.data.records
   }
 }
+
+const handler = () => {
+  getHasUser()
+}
+
+const search = () => {
+  getHasUser()
+  keyword.value = ''
+}
+
+const reset = () => {
+  settingStore.refsh = !settingStore.refsh
+}
+
 // 添加用户按钮的回调
 const addUser = () => {
   // 抽屉显示出来
@@ -151,16 +171,40 @@ const addUser = () => {
     formRef.value.clearValidate('password')
   })
 }
+
 // 更新已有的用户按钮的回调
 // row: 即为已有用户的账号信息
 const updateUser = (row) => {
   // 抽屉显示
   drawer.value = true
+  // 存储收集已有的账号信息
+  Object.assign(userParams, row)
+  // 清除上一次的错误地提示信息
+  nextTick(() => {
+    formRef.value.clearValidate('username')
+    formRef.value.clearValidate('name')
+    formRef.value.clearValidate('password')
+  })
 }
 
 const deleteUser = async (id: number) => {
-  let result = await reqDeleteSpu(id)
+  let result = await reqDeleteUser(id)
   if (result.code === 200) {
+    ElMessage({ type: 'success', message: '删除成功' })
+    getHasUser(userArr.value.length > 1 ? pageNo.value : pageNo.value - 1)
+  }
+}
+
+const selectChange = (value: any) => {
+  selectIdArr.value = value
+}
+
+const deleteSelectUser = async () => {
+  let idList: any = selectIdArr.value.map((item) => {
+    return item.id
+  })
+  let res: any = await reqSelectUser(idList)
+  if (res.code === 200) {
     ElMessage({ type: 'success', message: '删除成功' })
     getHasUser(userArr.value.length > 1 ? pageNo.value : pageNo.value - 1)
   }
@@ -182,7 +226,9 @@ const save = async () => {
       message: userParams.id ? '更新成功' : '添加成功'
     })
     // 获取最新的全部账号信息
-    getHasUser()
+    getHasUser(userParams.id ? pageNo.value : 1)
+    // 浏览器自动刷新一次
+    window.location.reload()
   } else {
     // 关闭抽屉
     drawer.value = false
@@ -190,10 +236,12 @@ const save = async () => {
     ElMessage({ type: 'error', message: userParams.id ? '更新失败' : '添加失败' })
   }
 }
+
 // 取消按钮的问题
 const cancel = () => {
   drawer.value = false
 }
+
 // 校验用户名字回调函数
 const validatorUserName = (rule: any, value: any, callBack: any) => {
   if (value.trim().length >= 5) {
@@ -202,7 +250,7 @@ const validatorUserName = (rule: any, value: any, callBack: any) => {
     callBack(new Error('用户名字至少五位数'))
   }
 }
-// 
+
 const validatorName = (rule: any, value: any, callBack: any) => {
   if (value.trim().length >= 5) {
     callBack()
@@ -218,12 +266,59 @@ const validatorPassword = (rule: any, value: any, callBack: any) => {
     callBack(new Error('用户密码至少六位'))
   }
 }
+
+const setRole = async (row: User) => {
+  drawer1.value = true
+  // 存储已有的用户信息
+  Object.assign(userParams, row)
+  // 获取全部的职位的数据与当前用户已有的职位的数据
+  let res: AllRoleResponseData = await reqAllRole(userParams.id as number)
+  if (res.code === 200) {
+    // 全部的
+    allRole.value = res.data.allRolesList
+    // 勾选上的
+    userRole.value = res.data.assignRoles
+    drawer1.value = true
+  }
+}
+
+const handleCheckAllChange = (val: boolean) => {
+  userRole.value = val ? allRole.value : []
+  isIndeterminate.value = false
+}
+
+const handleCheckedUsersChange = (value: string[]) => {
+  // 已经勾选的这些项目的长度
+  const checkedCount = value.length
+  checkAll.value = checkedCount === allRole.value.length
+  // 顶部的复选框不确定的样式
+  isIndeterminate.value =
+    checkedCount > 0 && checkedCount < allRole.value.length
+}
+
+const confirmClick = async () => {
+  let data: SetRoleData = {
+    userId: userParams.id as number,
+    roleIdList: userRole.value.map((item) => {
+      return item.id as number
+    }),
+  }
+  let res: any = await reqSetUserRole(data)
+  if (res.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '分配职务成功'
+    })
+    drawer1.value = false
+    getHasUser(pageNo.value)
+  }
+}
 // 表单校验的规则对象
 const rules = {
   // 用户名字
   username: [{ required: true, trigger: 'blur', validator: validatorUserName }],
   name: [{ required: true, trigger: 'blur', validator: validatorName }],
-  password: [{ required: true, trigger: 'blur', validator: validatorPassword }],
+  password: [{ required: true, trigger: 'blur', validator: validatorPassword }]
 }
 
 onMounted(() => {

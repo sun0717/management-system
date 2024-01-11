@@ -15,12 +15,25 @@
       <el-table-column label="价格" width="150px" prop="price"> </el-table-column>
       <el-table-column label="操作" width="250px" fixed="right">
         <template #="{ row, $index }">
-          <el-button type="primary" size="small" :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
-            @click="updateSale(row)"></el-button>
+          <el-button
+            type="primary"
+            size="small"
+            :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
+            @click="updateSale(row)"
+          ></el-button>
           <el-button type="primary" size="small" icon="Edit" @click="updateSku"></el-button>
-          <el-button type="primary" size="small" icon="InfoFilled" @click="findSku(row)"></el-button>
+          <el-button
+            type="primary"
+            size="small"
+            icon="InfoFilled"
+            @click="findSku(row)"
+          ></el-button>
           <!-- <el-button type="primary" size="small" icon="Delete"></el-button> -->
-          <el-popconfirm :title="`你确定要删除${row.skuName}`" width="200px" @confirm="removeSku(row.id)">
+          <el-popconfirm
+            :title="`你确定要删除${row.skuName}`"
+            width="200px"
+            @confirm="removeSku(row.id)"
+          >
             <template #reference>
               <el-button type="danger" size="small" icon="Delete"></el-button>
             </template>
@@ -28,9 +41,16 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[10, 20, 30, 40]"
-      :background="true" layout="prev, pager, next, jumper, ->, sizes, total" :total="total" @current-change="getHasSku"
-      @size-change="handler" />
+    <el-pagination
+      v-model:current-page="pageNo"
+      v-model:page-size="pageSize"
+      :page-sizes="[10, 20, 30, 40]"
+      :background="true"
+      layout="prev, pager, next, jumper, ->, sizes, total"
+      :total="total"
+      @current-change="getHasSku"
+      @size-change="handler"
+    />
     <!-- 抽屉组件：展示商品详情 -->
     <el-drawer v-model="drawer">
       <!-- 标题部分 -->
@@ -78,7 +98,7 @@ import { onMounted, ref } from 'vue'
 import { reqSkuList, reqSaleSku, reqCancelSale, reqSkuInfo, reqRemoveSku } from '@/api/product/sku'
 import type { SkuResponseData, SkuData } from '@/api/product/sku/type'
 import { ElMessage } from 'element-plus'
-import type { SkuInfoData } from '@/api/product/spu/type';
+import type { SkuInfoData } from '@/api/product/spu/type'
 // 分页器当前页码
 let pageNo = ref<number>(1)
 // 每一页展示几条数据
