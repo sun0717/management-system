@@ -69,5 +69,3 @@ export const useUserStore = defineStore('UserStore', () => {
     userLogout
   }
 })
-
-// 对外暴露

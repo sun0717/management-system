@@ -7,7 +7,7 @@ enum API {
   ALLROLEURL = '/admin/acl/user/toAssign/',
   REMOVEUSER_URL = '/admin/acl/user/remove/',
   DELETEALLUSER_URL = '/admin/acl/user/batchRemove',
-  SETROLE_url = '/admin/acl/user/doAssignRole',
+  SETROLE_url = '/admin/acl/user/doAssignRole'
 }
 
 export const reqUserInfo = (page: number, limit: number, username: string) =>
@@ -21,11 +21,13 @@ export const reqAddOrUpdateUser = (data: User) => {
   }
 }
 
-export const reqAllRole = (userId: number) => request.get<any, AllRoleResponseData>(API.ALLROLEURL + userId)
+export const reqAllRole = (userId: number) =>
+  request.get<any, AllRoleResponseData>(API.ALLROLEURL + userId)
 // 删除管理用户
 export const reqDeleteUser = (id: number) => request.delete<any, any>(API.REMOVEUSER_URL + id)
 
-export const reqSelectUser = (idList: number[]) => request.delete(API.DELETEALLUSER_URL, { data: idList })
+export const reqSelectUser = (idList: number[]) =>
+  request.delete(API.DELETEALLUSER_URL, { data: idList })
 
 // 修改角色权限
 export const reqSetUserRole = (data: SetRoleData) => request.post<any, any>(API.SETROLE_url, data)
