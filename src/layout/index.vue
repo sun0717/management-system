@@ -2,8 +2,14 @@
   <el-container class="layout-container-demo" style="height: 100vh">
     <el-aside width="200px" :class="{ isCollapse: LayoutSettingStore.isCollapse ? true : false }">
       <el-scrollbar>
-        <el-menu :default-active="$route.path" active-text-color="#fff" background-color="#001529" text-color="#959ea6"
-          :collapse="LayoutSettingStore.isCollapse" :router="true">
+        <el-menu
+          :default-active="$route.path"
+          active-text-color="#fff"
+          background-color="#001529"
+          text-color="#959ea6"
+          :collapse="LayoutSettingStore.isCollapse"
+          :router="true"
+        >
           <Logo />
           <Menu :menuList="userStore.menuRoutes" />
         </el-menu>
@@ -12,10 +18,12 @@
 
     <el-container class="container">
       <TabBar style="width: 100%" />
-      <el-main :style="{
-        left: !LayoutSettingStore.isCollapse ? '200px' : '56px',
-        width: LayoutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
-      }">
+      <el-main
+        :style="{
+          left: !LayoutSettingStore.isCollapse ? '200px' : '56px',
+          width: LayoutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
+        }"
+      >
         <el-scrollbar>
           <Content />
         </el-scrollbar>
@@ -39,6 +47,7 @@ import { useUserStore } from '@/stores/modules/user'
 // 引入顶部 tabbar 组件
 import TabBar from './tabbar/index.vue'
 let userStore = useUserStore()
+console.log(userStore)
 let LayoutSettingStore = useLayoutSettingStore()
 // 获取路由对象
 let $route = useRoute()

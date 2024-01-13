@@ -9,7 +9,7 @@ const goHome = () => {
 <template>
   <div class="box">
     <h1>404 PAGE NOT FOUND</h1>
-    <img src="../../assets/images/error_images/404.png" alt="">
+    <img src="../../assets/images/error_images/404.png" alt="" />
     <el-button type="success" round @click="goHome">take me home</el-button>
   </div>
 </template>

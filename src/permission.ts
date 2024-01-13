@@ -9,15 +9,13 @@ import { useUserStore } from './stores/modules/user'
 // 全局守卫: 项目当中任意路由切换都会触发的钩子
 // 全局前置守卫
 router.beforeEach(async (to: any, from: any, next: any) => {
-  const userStore = useUserStore()  
-  document.title = to.meta.title + ` | ${setting.title}`
   nprogress.start()
+  const userStore = useUserStore()
+  console.log(userStore)
+  document.title = to.meta.title + ` | ${setting.title}`
   // 获取 token, 判断用户登录, 还是未登录
   let token = userStore.token
-  console.log(token);
   let username = userStore.username
-  console.log(username);
-  // 用户登录判断
   // 有 token
   if (token) {
     // 如果访问登录页面
@@ -32,6 +30,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         next()
       } else {
         try {
+          // userInfo
           await userStore.userInfo()
           // 放行
           // 万一：刷新的时候是异步路由，有可能获取到用户信息、异步路由还没有加载完毕，出现空白的效果
@@ -54,7 +53,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 })
 
 // 全局后置守卫
-router.afterEach((route) => {
+router.afterEach(() => {
   nprogress.done()
 })
 

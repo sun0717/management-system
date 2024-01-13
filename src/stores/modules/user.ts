@@ -15,7 +15,7 @@ import cloneDeep from 'lodash/cloneDeep'
  * 过滤当前用户需要展示的异步路由
  * @param asyncRoute 动态路由
  * @param routes 接口返回的路由列表
- * @returns 
+ * @returns
  */
 function filterAsyncRoute(asyncRoute: any, routes: any) {
   return asyncRoute.filter((item: any) => {
@@ -31,8 +31,8 @@ function filterAsyncRoute(asyncRoute: any, routes: any) {
 // 创建用户小仓库
 export const useUserStore = defineStore('UserStore', () => {
   // 存储数据
-  let token = GET_TOKEN()!
-  let menuRoutes = constantRoute
+  const token = ref(GET_TOKEN()!) // 闹半天，问题出这里了？？？哈哈哈哈哈
+  let menuRoutes = ref(constantRoute)
   const username = ref('')
   const avatar = ref('')
   const buttons = ref<string[]>([])
@@ -41,9 +41,10 @@ export const useUserStore = defineStore('UserStore', () => {
     const result: LoginResponseData = await reqLogin(data)
     // 登录请求：成功200->token
     // 登录请求：失败201->登陆失败错误的信息
-    if (result.code == 200) {
-      token = result.data as string
-      SET_TOEKN(result.data as string)  
+    if (result.code === 200) {
+      token.value = result.data as string
+      console.log(token)
+      SET_TOEKN(result.data as string)
       return 'ok'
     } else {
       return Promise.reject(new Error(result.data as string))
@@ -60,11 +61,14 @@ export const useUserStore = defineStore('UserStore', () => {
       // 计算当前用户需要展示的异步路由
       const userAsyncRoute = filterAsyncRoute(cloneDeep(asyncRoute), result.data.routes)
       // 菜单需要的数据
-      menuRoutes = [...constantRoute, ...userAsyncRoute, anyRoute];
+      menuRoutes.value = [...constantRoute, ...userAsyncRoute, anyRoute];
+      console.log(+ '1')
+      console.log(menuRoutes);
       // 目前路由器管理的只有常量路由：用户计算完毕异步路由、任意路由动态增加
       [...userAsyncRoute, anyRoute].forEach((route: any) => {
         router.addRoute(route)
       })
+      console.log(router.getRoutes())
       return 'ok'
     } else {
       return Promise.reject(new Error(result.message))
@@ -74,7 +78,7 @@ export const useUserStore = defineStore('UserStore', () => {
   async function userLogout() {
     const result: any = await reqLogout()
     if (result.code == 200) {
-      token = ''
+      token.value = ''
       username.value = ''
       avatar.value = ''
       REMOVE_TOKEN()

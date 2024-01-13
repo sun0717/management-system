@@ -17,9 +17,9 @@ const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn
 })
-app.use(router)
 app.use(pinia)
-
+app.use(router)
+import './permission'
 // svg 插件需要配置代码
 import 'virtual:svg-icons-register'
 // 引入自定义插件对象:注册整个项目全局组件
@@ -29,8 +29,9 @@ app.use(globalComponent)
 // 引入模板的全局的样式
 import '@/styles/index.scss'
 // 引入路由鉴权文件
-// import './permission'
+
 // 引入自定义指令文件
-import { isHasButton } from './directive/has' 
+import { isHasButton } from './directive/has'
 isHasButton(app)
+
 app.mount('#app')

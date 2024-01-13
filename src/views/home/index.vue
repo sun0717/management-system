@@ -3,15 +3,12 @@ import { onMounted } from 'vue'
 import { getTime } from '@/utils/time'
 import { useUserStore } from '@/stores/modules/user'
 let userStore = useUserStore()
-onMounted(() => {
-  userStore.userInfo()
-})
 </script>
 
 <template>
   <el-card class="box">
     <div class="box">
-      <img :src="userStore.avatar" alt="" class="avatar"/>
+      <img :src="userStore.avatar" alt="" class="avatar" />
       <div class="footer">
         <h3 class="title">
           {{ getTime() }} 好~
