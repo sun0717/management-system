@@ -2,14 +2,8 @@
   <el-container class="layout-container-demo" style="height: 100vh">
     <el-aside width="200px" :class="{ isCollapse: LayoutSettingStore.isCollapse ? true : false }">
       <el-scrollbar>
-        <el-menu
-          :default-active="$route.path"
-          active-text-color="#fff"
-          background-color="#001529"
-          text-color="#959ea6"
-          :collapse="LayoutSettingStore.isCollapse"
-          :router="true"
-        >
+        <el-menu :default-active="$route.path" active-text-color="#fff" background-color="#001529" text-color="#959ea6"
+          :collapse="LayoutSettingStore.isCollapse" :router="true">
           <Logo />
           <Menu :menuList="userStore.menuRoutes" />
         </el-menu>
@@ -18,12 +12,10 @@
 
     <el-container class="container">
       <TabBar style="width: 100%" />
-      <el-main
-        :style="{
-          left: !LayoutSettingStore.isCollapse ? '200px' : '56px',
-          width: LayoutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
-        }"
-      >
+      <el-main :style="{
+        left: !LayoutSettingStore.isCollapse ? '200px' : '56px',
+        width: LayoutSettingStore.isCollapse ? 'calc(100% - 56px)' : 'calc(100% - 200px)'
+      }">
         <el-scrollbar>
           <Content />
         </el-scrollbar>
@@ -33,8 +25,6 @@
 </template>
 
 <script setup lang="ts">
-// 获取路由对象
-
 // 引入左侧菜单 logo 子组件
 import Logo from './logo/index.vue'
 // 引入菜单组件
@@ -50,18 +40,19 @@ import { useUserStore } from '@/stores/modules/user'
 import TabBar from './tabbar/index.vue'
 let userStore = useUserStore()
 let LayoutSettingStore = useLayoutSettingStore()
-console.log(userStore)
 // 获取路由对象
 let $route = useRoute()
 </script>
-<script lang="ts"></script>
+<script lang="ts" setup></script>
 <style scoped lang="scss">
 .layout-container-demo {
   height: 100%;
 }
+
 .layout-container-demo .el-menu {
   border-right: none;
 }
+
 .layout-container-demo .el-main {
   position: absolute;
   padding: 20px;
@@ -76,11 +67,13 @@ let $route = useRoute()
   background-color: #001529 !important;
   transition: all 0.3s;
 }
+
 .el-header {
   background-color: #fff !important;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
   z-index: 999;
 }
+
 .isCollapse {
   width: 56px;
 }

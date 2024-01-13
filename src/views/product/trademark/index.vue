@@ -1,13 +1,7 @@
 <template>
   <el-card class="box-card">
     <!-- 添加品牌 -->
-    <el-button
-      type="primary"
-      size="default"
-      icon="Plus"
-      @click="addTradeMark"
-      v-has="`btn.Trademark.add`"
-    >
+    <el-button type="primary" size="default" icon="Plus" @click="addTradeMark" v-has="`btn.Trademark.add`">
       添加品牌
     </el-button>
     <el-table style="margin: 10px 0" border :data="tradeMarkArr">
@@ -20,18 +14,8 @@
       </el-table-column>
       <el-table-column label="品牌操作">
         <template #="{ row, $index }">
-          <el-button
-            type="primary"
-            size="small"
-            icon="Edit"
-            @click="updateTradeMark(row)"
-          ></el-button>
-          <el-popconfirm
-            :title="`您确定删除${row.tmName}`"
-            width="250px"
-            icon="delete"
-            @confirm="removeTradeMark(row.id)"
-          >
+          <el-button type="primary" size="small" icon="Edit" @click="updateTradeMark(row)"></el-button>
+          <el-popconfirm :title="`您确定删除${row.tmName}`" width="250px" icon="delete" @confirm="removeTradeMark(row.id)">
             <template #reference>
               <el-button type="danger" size="small" icon="Delete"></el-button>
             </template>
@@ -41,16 +25,9 @@
     </el-table>
 
     <!-- pagination -->
-    <el-pagination
-      v-model:current-page="pageNo"
-      v-model:page-size="limit"
-      :page-sizes="[3, 5, 7, 9]"
-      :background="true"
-      layout="prev, pager, next, jumper, ->, sizes, total"
-      :total="total"
-      @current-change="getHasTradeMark"
-      @size-change="sizeChange"
-    />
+    <el-pagination v-model:current-page="pageNo" v-model:page-size="limit" :page-sizes="[3, 5, 7, 9]" :background="true"
+      layout="prev, pager, next, jumper, ->, sizes, total" :total="total" @current-change="getHasTradeMark"
+      @size-change="sizeChange" />
   </el-card>
   <!-- 对话框组件：在添加品牌与修改已有品牌的业务时候使用结构 -->
   <el-dialog v-model="dialogFormVisible" :title="trademarkParams.id ? '修改品牌' : '添加品牌'">
@@ -67,13 +44,8 @@
                   若返回 false 或者返回 Promise 且被 reject, 则停止上传。
                   用来限制用户上传文件的格式和大小
         -->
-        <el-upload
-          class="avatar-uploader"
-          action="/api/admin/product/fileUpload"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
+        <el-upload class="avatar-uploader" action="/api/admin/product/fileUpload" :show-file-list="false"
+          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
           <img v-if="trademarkParams.logoUrl" :src="trademarkParams.logoUrl" class="avatar" />
           <el-icon v-else class="avatar-uploader-icon">
             <Plus />
@@ -96,6 +68,7 @@ import {
   reqDeleteTrademark
 } from '@/api/product/trademark'
 import type { TradeMarkResponseData, Records, TradeMark } from '@/api/product/trademark/type'
+// 当前页码
 let pageNo = ref<number>(1)
 // 约束每页展示条数
 let limit = ref<number>(3)

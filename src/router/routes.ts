@@ -1,4 +1,4 @@
-// 对外暴露路由
+// 对外暴露路由(常量路由): 全部用户都可以访问到的路由 
 export const constantRoute = [
   {
     // 登录
@@ -27,7 +27,7 @@ export const constantRoute = [
         component: () => import('@/views/home/index.vue'),
         meta: {
           title: '首页',
-          hidden: 'false',
+          hidden: false,
           icon: 'HomeFilled'
         }
       }
@@ -38,16 +38,6 @@ export const constantRoute = [
     component: () => import('@/views/404/index.vue'),
     meta: {
       title: '404',
-      hidden: 'true'
-    }
-  },
-  {
-    // 任意路由匹配, 上面的没匹配到, 就匹配这里
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-    name: 'any',
-    meta: {
-      title: '任意路由',
       hidden: true
     }
   },
@@ -61,6 +51,8 @@ export const constantRoute = [
       icon: 'Platform'
     }
   },
+]
+export const asyncRoute = [
   {
     path: '/acl',
     component: () => import('@/layout/index.vue'),
@@ -157,3 +149,13 @@ export const constantRoute = [
     ]
   }
 ]
+export const anyRoute = {
+  // 任意路由匹配, 上面的没匹配到, 就匹配这里
+  path: '/:pathMatch(.*)*',
+  redirect: '/404',
+  name: 'any',
+  meta: {
+    title: '任意路由',
+    hidden: true
+  }
+}

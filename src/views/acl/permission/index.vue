@@ -6,14 +6,30 @@
     <el-table-column label="操作" width="260px">
       <!-- row: 即为已有的菜单对象|按钮的对象的数据 -->
       <template #="{ row, $index }">
-        <el-button size="small" :disabled="row.level === 4 ? true : false" @click="addPermission(row)">
+        <el-button
+          size="small"
+          :disabled="row.level === 4 ? true : false"
+          @click="addPermission(row)"
+        >
           {{ row.level === 3 ? '添加功能' : '添加菜单' }}
         </el-button>
-        <el-button type="primary" size="small" :disabled="row.level === 1 ? true : false" @click="updatePermission(row)">
-          编辑</el-button>
-        <el-popconfirm :title="`你确定要删除${row.name}?`" width="260px" @confirm="removeMenu(row.id)">
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="row.level === 1 ? true : false"
+          @click="updatePermission(row)"
+        >
+          编辑</el-button
+        >
+        <el-popconfirm
+          :title="`你确定要删除${row.name}?`"
+          width="260px"
+          @confirm="removeMenu(row.id)"
+        >
           <template #reference>
-            <el-button type="danger" size="small" :disabled="row.level === 1 ? true : false">删除</el-button>
+            <el-button type="danger" size="small" :disabled="row.level === 1 ? true : false"
+              >删除</el-button
+            >
           </template>
         </el-popconfirm>
       </template>
@@ -39,18 +55,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import {
-  reqAllPermission,
-  reqAddOrUpdateMenu,
-  reqRemoveMenu,
-} from '@/api/acl/menu'
+import { reqAllPermission, reqAddOrUpdateMenu, reqRemoveMenu } from '@/api/acl/menu'
 import type {
   PermissionResponseData,
   PermissionList,
   Permission,
-  MenuParams,
+  MenuParams
 } from '@/api/acl/menu/type'
-import { ElMessage } from 'element-plus';
+import { ElMessage } from 'element-plus'
 // 存储菜单的数据
 let PermissionArr = ref<PermissionList>([])
 // 控制对话框的显示与一次囊
@@ -89,7 +101,7 @@ const addPermission = (row: Permission) => {
   // 收集新增的菜单的 level 数值
   menuData.level = row.level + 1
   // 给谁新增子菜单
-  menuData.pid = (row.id as number)
+  menuData.pid = row.id as number
 }
 
 // 编辑已有的菜单

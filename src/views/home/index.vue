@@ -11,7 +11,7 @@ onMounted(() => {
 <template>
   <el-card class="box">
     <div class="box">
-      <img :src="userStore.avatar" alt="">
+      <img :src="userStore.avatar" alt="" class="avatar"/>
       <div class="footer">
         <h3 class="title">
           {{ getTime() }} 好~

@@ -23,9 +23,11 @@ export const reqAddOrUpdateRole = (data: RoleData) => {
 
 export const reqAllMenuList = (roleId: number) => request.get<any, any>(API.ALLROLEURL + roleId)
 
-export const reqRemoveRole = (roleId: number) => request.delete<any, any>(API.REMOVEROLE_URL + roleId)
+export const reqRemoveRole = (roleId: number) =>
+  request.delete<any, any>(API.REMOVEROLE_URL + roleId)
 
-export const reqSetPermission = (roleId: number, permissionId: number[]) => request.post(API.SETPERMISSION_URL + `roleId=${roleId}&permissionId=${permissionId}`)
+export const reqSetPermission = (roleId: number, permissionId: number[]) =>
+  request.post(API.SETPERMISSION_URL + `roleId=${roleId}&permissionId=${permissionId}`)
 // export const reqAllRole = (userId: number) =>
 //   request.get<any, AllRoleResponseData>(API.ALLROLEURL + userId)
 // // 删除管理用户

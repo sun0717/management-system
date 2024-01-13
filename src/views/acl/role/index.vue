@@ -19,16 +19,35 @@
       <!-- <el-table-column type="selection" align="center"></el-table-column> -->
       <el-table-column label="#" type="index" align="center"></el-table-column>
       <el-table-column label="id" align="center" prop="id"></el-table-column>
-      <el-table-column label="职位名称" align="center" prop="roleName" show-overflow-tooltip></el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" show-overflow-tooltip></el-table-column>
-      <el-table-column label="更新时间" align="center" prop="updateTime" show-overflow-tooltip></el-table-column>
+      <el-table-column
+        label="职位名称"
+        align="center"
+        prop="roleName"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="创建时间"
+        align="center"
+        prop="createTime"
+        show-overflow-tooltip
+      ></el-table-column>
+      <el-table-column
+        label="更新时间"
+        align="center"
+        prop="updateTime"
+        show-overflow-tooltip
+      ></el-table-column>
       <el-table-column label="操作" width="280px" align="center">
         <template #="{ row, $index }">
           <el-button size="small" icon="User" @click="setPermission(row)"> 分配权限 </el-button>
           <el-button type="primary" size="small" icon="Edit" @click="updateRole(row)">
             编辑
           </el-button>
-          <el-popconfirm :title="`你确定删除${row.username}`" width="260px" @confirm="removeRole(row.id)">
+          <el-popconfirm
+            :title="`你确定删除${row.username}`"
+            width="260px"
+            @confirm="removeRole(row.id)"
+          >
             <template #reference>
               <el-button type="danger" size="small" icon="Delete"> 删除 </el-button>
             </template>
@@ -36,9 +55,16 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[10, 20, 30, 40]"
-      :background="true" layout="prev, pager, next, jumper, -> , sizes, total" :total="total" @current-change="getHasRole"
-      @size-change="sizeHandler" />
+    <el-pagination
+      v-model:current-page="pageNo"
+      v-model:page-size="pageSize"
+      :page-sizes="[10, 20, 30, 40]"
+      :background="true"
+      layout="prev, pager, next, jumper, -> , sizes, total"
+      :total="total"
+      @current-change="getHasRole"
+      @size-change="sizeHandler"
+    />
   </el-card>
   <el-dialog v-model="dialogVisible" :title="RoleParams.id ? '更新职位' : '添加职位'">
     <el-form :model="RoleParams" :rules="rules" ref="form">
@@ -58,8 +84,15 @@
     </template>
     <template #default>
       <!-- 树形控件 -->
-      <el-tree ref="tree" :data="menuArr" show-checkbox node-key="id" default-expand-all :default-checked-keys="selectArr"
-        :props="defaultProps" />
+      <el-tree
+        ref="tree"
+        :data="menuArr"
+        show-checkbox
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="selectArr"
+        :props="defaultProps"
+      />
     </template>
     <template #footer>
       <div style="flex: auto">
@@ -72,10 +105,22 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue'
-import { ElMessage } from 'element-plus';
-import { reqRoleInfo, reqAllMenuList, reqAddOrUpdateRole, reqRemoveRole, reqSetPermission } from '@/api/acl/role'
+import { ElMessage } from 'element-plus'
+import {
+  reqRoleInfo,
+  reqAllMenuList,
+  reqAddOrUpdateRole,
+  reqRemoveRole,
+  reqSetPermission
+} from '@/api/acl/role'
 import { useLayoutSettingStore } from '@/stores/modules/setting'
-import type { RoleData, Records, RoleResponseData, MenuResponseData, MenuList } from '@/api/acl/role/type'
+import type {
+  RoleData,
+  Records,
+  RoleResponseData,
+  MenuResponseData,
+  MenuList
+} from '@/api/acl/role/type'
 let settingStore = useLayoutSettingStore()
 // 分页器当前页码
 let pageNo = ref<number>(1)
@@ -197,7 +242,7 @@ const filterSelectArr = (allData: any, initArr: any) => {
     if (item.children && item.children.length > 0) {
       filterSelectArr(item.children, initArr)
     }
-  });
+  })
   return initArr
 }
 
@@ -216,7 +261,7 @@ const save = async () => {
   if (res.code === 200) {
     ElMessage({
       type: 'success',
-      message: RoleParams.id ? "更新成功" : "添加成功"
+      message: RoleParams.id ? '更新成功' : '添加成功'
     })
   }
 }
